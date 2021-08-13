@@ -1,4 +1,4 @@
-package OzayGroupExploration
+package main
 
 import (
 	"testing"
