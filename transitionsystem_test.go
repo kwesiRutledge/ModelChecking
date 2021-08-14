@@ -222,3 +222,87 @@ func TestTransitionSystem_IsActionDeterministic2(t *testing.T) {
 		t.Errorf("Test is given a transition system that is action deterministic, but function claims that it is not!")
 	}
 }
+
+/*
+TestTransitionSystem_IsAPDeterministic1
+Description:
+	Testing that the function correctly recognizes that a transition system IS AP-deterministic.
+*/
+func TestTransitionSystem_IsAPDeterministic1(t *testing.T) {
+	ts1 := GetSimpleTS2()
+
+	if !ts1.IsAPDeterministic() {
+		t.Errorf("Test is given a transition system that is AP-deterministic, but function claims that it is not!")
+	}
+}
+
+/*
+TestTransitionSystem_IsAPDeterministic2
+Description:
+	Testing that the function correctly recognizes that a transition system IS AP-deterministic.
+*/
+func TestTransitionSystem_IsAPDeterministic2(t *testing.T) {
+	ts1 := GetSimpleTS1()
+
+	if !ts1.IsAPDeterministic() {
+		t.Errorf("Test is given a transition system that is AP-deterministic, but function claims that it is not!")
+	}
+}
+
+/*
+TransitionSystem_GetSimpleTS4
+Description:
+	Get a transition system to test Pre and Post.
+	It should have states that generates empty sets for Pre() and Post() respectively.
+*/
+func TransitionSystem_GetSimpleTS4() TransitionSystem {
+	ts0, _ := GetTransitionSystem(
+		[]string{"1", "2", "3", "4", "5"}, []string{"1", "2"},
+		map[string]map[string][]string{
+			"1": map[string][]string{
+				"1": []string{"1"},
+				"2": []string{"2"},
+			},
+			"2": map[string][]string{
+				"1": []string{"1", "2"},
+				"2": []string{"2", "3"},
+			},
+			"3": map[string][]string{
+				"1": []string{"3"},
+				"2": []string{"4"},
+			},
+			"4": map[string][]string{
+				"1": []string{},
+				"2": []string{},
+			},
+			"5": map[string][]string{
+				"1": []string{"4"},
+				"2": []string{},
+			},
+		},
+		[]string{"1"},
+		[]string{"A", "B", "C", "D"},
+		map[string][]string{
+			"1": []string{"A"},
+			"2": []string{"B", "D"},
+			"3": []string{"B", "D"},
+			"4": []string{"A", "C"},
+			"5": []string{"A", "B", "C", "D"},
+		},
+	)
+
+	return ts0
+}
+
+/*
+TestTransitionSystem_IsAPDeterministic3
+Description:
+	Testing that the function correctly recognizes that a transition system IS NOT AP-deterministic.
+*/
+func TestTransitionSystem_IsAPDeterministic3(t *testing.T) {
+	ts1 := TransitionSystem_GetSimpleTS4()
+
+	if ts1.IsAPDeterministic() {
+		t.Errorf("Test is given a transition system that is NOT AP-deterministic, but function claims that it is!")
+	}
+}

@@ -122,24 +122,35 @@ Description:
 	- Initial state set contains at most one element.
 	- Post(s,a) contains elements with unique labels (or none?), for all states s and actions a
 */
-// func (ts TransitionSystem) IsAPDeterministic() bool {
+func (ts TransitionSystem) IsAPDeterministic() bool {
 
-// 	// Check the Initial State Set
-// 	if !(len(ts.I) <= 1) {
-// 		return false
-// 	}
+	// Check the Initial State Set
+	if !(len(ts.I) <= 1) {
+		return false
+	}
 
-// 	// Check the value of Post for each state, action pair.
-// 	for _, state := range ts.S {
-// 		for _, ap := range ts.AP {
-// 			tempPostValue, _ := Post(state)
-// 			// find all elements of tempPostValue with Label
-// 			var postWithLabelap []TransitionSystemState
-// 			if !(len(tempPostValue) <= 1) {
-// 				return false
-// 			}
-// 		}
-// 	}
+	// Check the value of Post for each state, action pair.
+	tempPowerset := Powerset(ts.AP)
 
-// 	return true
-// }
+	for _, state := range ts.S {
+		for _, powersetElement := range tempPowerset {
+			// Collect all elements of Post(state) that have label of powersetElement
+			tempPostValue, _ := Post(state)
+			// find all elements of tempPostValue with Label
+			var postWithLabelPE []TransitionSystemState
+			for _, postState := range tempPostValue {
+				LOfPostState := ts.L[postState]
+				equalsFlag, _ := SliceEquals(LOfPostState, powersetElement)
+				if equalsFlag {
+					postWithLabelPE = append(postWithLabelPE, postState)
+				}
+			}
+
+			if !(len(postWithLabelPE) <= 1) {
+				return false
+			}
+		}
+	}
+
+	return true
+}
