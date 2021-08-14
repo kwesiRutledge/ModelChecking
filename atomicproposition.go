@@ -5,7 +5,11 @@ Description:
 */
 package main
 
-import combinations "github.com/mxschmitt/golang-combinations"
+import (
+	"errors"
+
+	combinations "github.com/mxschmitt/golang-combinations"
+)
 
 type AtomicProposition struct {
 	Name string
@@ -51,25 +55,21 @@ func (ap AtomicProposition) In(apSliceIn []AtomicProposition) bool {
 }
 
 /*
-Subset
+ToSliceOfAtomicPropositions
 Description:
-	Determines if apSliceA is a subset of apSliceB
+	Attempts to convert an arbitrary slice into a slice of atomic propositions.
 */
-func Subset(apSliceA, apSliceB []AtomicProposition) bool {
-	//Iterate through all AtomicPropositions in apSliceA and make sure that they are in B.
-	for _, apFromA := range apSliceA {
-		if !(apFromA.In(apSliceB)) {
-			return false
-		}
+func ToSliceOfAtomicPropositions(slice1 interface{}) ([]AtomicProposition, error) {
+	// Attempt To Cast
+	castedSlice1, ok1 := slice1.([]AtomicProposition)
+
+	if ok1 {
+		return castedSlice1, nil
+	} else {
+		return []AtomicProposition{}, errors.New("There was an issue casting the slice into a slice of Atomic Propositions.")
 	}
 
-	// If all elements of A are in B, then return true
-	return true
 }
-
-/*
-
- */
 
 /*
 Powerset
