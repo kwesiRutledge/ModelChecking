@@ -1,4 +1,4 @@
-module github.com/kwesiRutledge/ModelChecking.go
+module github.com/kwesiRutledge/ModelChecking
 
 go 1.16
 
