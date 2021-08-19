@@ -3,7 +3,11 @@ transitionsystem.go
 Description:
  	Basic implementation of a Transition System.
 */
-package main
+package modelchecking
+
+import (
+	"fmt"
+)
 
 type TransitionSystem struct {
 	S          []TransitionSystemState
@@ -42,6 +46,11 @@ func GetTransitionSystem(stateNames []string, actionNames []string, transitionMa
 	}
 	ts.I = I
 
+	err := ts.CheckI()
+	if err != nil {
+		return ts, err
+	}
+
 	// // Create List of Atomic Propositions
 	// ts.AP = StringSliceToAPs(atomicPropositionsList)
 
@@ -61,6 +70,11 @@ func GetTransitionSystem(stateNames []string, actionNames []string, transitionMa
 	}
 	ts.Transition = Transition
 
+	err = ts.CheckTransition()
+	if err != nil {
+		return ts, err
+	}
+
 	// Create Label Values
 	fullLabelMap := make(map[TransitionSystemState][]AtomicProposition)
 	for stateValue, associatedAPs := range labelMap {
@@ -70,6 +84,54 @@ func GetTransitionSystem(stateNames []string, actionNames []string, transitionMa
 	ts.L = fullLabelMap
 
 	return ts, nil
+}
+
+/*
+CheckI
+Description:
+	Checks that all of the states in the initial state set are from the state set S.
+*/
+func (ts TransitionSystem) CheckI() error {
+	for _, Istate := range ts.I {
+		if !Istate.In(ts.S) {
+			return fmt.Errorf("The state %v is not in the state set of the transition system!", Istate.Name)
+		}
+	}
+	// If we finish checking I,
+	// then all states were satisfied
+	return nil
+}
+
+/*
+CheckTransition
+Description:
+	Checks that all of the transition states are correct.
+*/
+func (ts TransitionSystem) CheckTransition() error {
+	// Checks that all source states are from the state set.
+	for state1 := range ts.Transition {
+		if !state1.In(ts.S) {
+			return fmt.Errorf("One of the source states in the Transition was not in the state set: %v", state1.Name)
+		}
+	}
+
+	// Checks that all input states are from the action set
+	for _, actionMap := range ts.Transition {
+		for tempAction, targetStates := range actionMap {
+			if _, foundInAct := FindInSlice(tempAction, ts.Act); !foundInAct {
+				return fmt.Errorf("The action \"%v\" was found in the transition map but is not in the action set!", tempAction)
+			}
+			// Search through all target states to see if they are in the state set
+			for _, targetState := range targetStates {
+				if !targetState.In(ts.S) {
+					return fmt.Errorf("There is an ancestor state \"%v\" which is not part of the state.", targetState.Name)
+				}
+			}
+		}
+	}
+
+	// Completed with no errors
+	return nil
 }
 
 func (ap AtomicProposition) SatisfactionHelper(stateIn TransitionSystemState) (bool, error) {

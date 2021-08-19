@@ -1,4 +1,4 @@
-package main
+package modelchecking
 
 import (
 	"testing"
@@ -305,4 +305,124 @@ func TestTransitionSystem_IsAPDeterministic3(t *testing.T) {
 	if ts1.IsAPDeterministic() {
 		t.Errorf("Test is given a transition system that is NOT AP-deterministic, but function claims that it is!")
 	}
+}
+
+/*
+TestTransitionSystem_CheckI1
+Description:
+	Testing that transition system constructor catches a bad initial state set is given.
+*/
+func TestTransitionSystem_CheckI1(t *testing.T) {
+	_, err := GetTransitionSystem(
+		[]string{"1", "2", "3"}, []string{"1", "2"},
+		map[string]map[string][]string{
+			"1": map[string][]string{
+				"1": []string{"1"},
+				"2": []string{"2"},
+			},
+			"2": map[string][]string{
+				"1": []string{"1", "2"},
+				"2": []string{"2", "3"},
+			},
+			"3": map[string][]string{
+				"1": []string{"3"},
+				"2": []string{"4"},
+			},
+		},
+		[]string{"4"},
+		[]string{"A", "B", "C", "D"},
+		map[string][]string{
+			"1": []string{"A"},
+			"2": []string{"B", "D"},
+			"3": []string{"B", "D"},
+		},
+	)
+
+	if err == nil {
+		t.Errorf("There was not an error getting a transition system! There should have been")
+	}
+
+	if err.Error() != "The state 4 is not in the state set of the transition system!" {
+		t.Errorf("The error was not what we expected: %v", err.Error())
+	}
+
+}
+
+/*
+TestTransitionSystem_CheckI2
+Description:
+	Testing that transition system constructor catches a good initial state set is given.
+*/
+func TestTransitionSystem_CheckI2(t *testing.T) {
+	_, err := GetTransitionSystem(
+		[]string{"1", "2", "3"}, []string{"1", "2"},
+		map[string]map[string][]string{
+			"1": map[string][]string{
+				"1": []string{"1"},
+				"2": []string{"2"},
+			},
+			"2": map[string][]string{
+				"1": []string{"1", "2"},
+				"2": []string{"2", "3"},
+			},
+			"3": map[string][]string{
+				"1": []string{"3"},
+				"2": []string{"1"},
+			},
+		},
+		[]string{"1", "2", "3"},
+		[]string{"A", "B", "C", "D"},
+		map[string][]string{
+			"1": []string{"A"},
+			"2": []string{"B", "D"},
+			"3": []string{"B", "D"},
+		},
+	)
+
+	if err != nil {
+		t.Errorf("There was an error getting the transition system: %v", err)
+	}
+
+}
+
+/*
+TestTransitionSystem_CheckTransition1
+Description:
+	Testing that transition system constructor catches a bad transition with bad
+	initial state.
+*/
+func TestTransitionSystem_CheckTransition1(t *testing.T) {
+	_, err := GetTransitionSystem(
+		[]string{"1", "2", "3"}, []string{"1", "2"},
+		map[string]map[string][]string{
+			"1": map[string][]string{
+				"1": []string{"1"},
+				"2": []string{"2"},
+			},
+			"2": map[string][]string{
+				"1": []string{"1", "2"},
+				"2": []string{"2", "3"},
+			},
+			"4": map[string][]string{
+				"1": []string{"3"},
+				"2": []string{"4"},
+			},
+		},
+		[]string{"1", "2", "3"},
+		[]string{"A", "B", "C", "D"},
+		map[string][]string{
+			"1": []string{"A"},
+			"2": []string{"B", "D"},
+			"3": []string{"B", "D"},
+		},
+	)
+
+	if err == nil {
+		t.Errorf("The algorithm did not catch the Transition issue!")
+	}
+
+	if err.Error() != "One of the source states in the Transition was not in the state set: 4" {
+		t.Errorf("The error was not what we expected: %v", err.Error())
+	}
+
 }

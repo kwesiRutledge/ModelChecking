@@ -3,7 +3,7 @@ transitionsystemstate.go
 Description:
  	Basic implementation of a Transition System's state.
 */
-package main
+package modelchecking
 
 import (
 	"errors"

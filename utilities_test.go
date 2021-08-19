@@ -3,7 +3,7 @@ utilities_test.go
 Description:
 	Tests of the extra functions located in utilities.go.
 */
-package main
+package modelchecking
 
 import (
 	"testing"

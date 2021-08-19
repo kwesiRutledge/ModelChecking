@@ -3,7 +3,7 @@ concurrentgamemodel.go
 Description:
  	Basic implementation of a Concurrent Game Model discussed Game-Theoretic Semantics for Alternating-Time Temporal Logic.
 */
-package main
+package modelchecking
 
 type ConcurrentGameModel struct {
 	Agents []CGMAgent

@@ -3,7 +3,7 @@ utilities.go
 Description:
 */
 
-package main
+package modelchecking
 
 import (
 	"fmt"
@@ -40,6 +40,11 @@ func SliceSubset(slice1, slice2 interface{}) (bool, error) {
 
 }
 
+/*
+SliceEquals
+Description:
+
+*/
 func SliceEquals(slice1, slice2 interface{}) (bool, error) {
 	//Determine if both slices are of the same type.
 	// if slice1.(type) != slice2.(type) {
@@ -59,4 +64,25 @@ func SliceEquals(slice1, slice2 interface{}) (bool, error) {
 
 	return oneSubsetTwo && twoSubsetOne, nil
 
+}
+
+/*
+FindInSlice
+Description:
+
+*/
+func FindInSlice(xIn interface{}, sliceIn interface{}) (int, bool) {
+
+	x := xIn.(string)
+	slice := sliceIn.([]string)
+
+	xLocationInSliceIn := -1
+
+	for sliceIndex, sliceValue := range slice {
+		if x == sliceValue {
+			xLocationInSliceIn = sliceIndex
+		}
+	}
+
+	return xLocationInSliceIn, xLocationInSliceIn >= 0
 }

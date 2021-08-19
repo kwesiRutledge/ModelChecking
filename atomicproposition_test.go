@@ -3,7 +3,7 @@ atomicproposition_test.go
 Description:
 	Tests of the functions pertaining to the AtomicProposition object.
 */
-package main
+package modelchecking
 
 import (
 	"testing"

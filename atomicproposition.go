@@ -3,7 +3,7 @@ atomicproposition.go
 Description:
  	Basic implementation of an Atomic Proposition object.
 */
-package main
+package modelchecking
 
 import (
 	"errors"
