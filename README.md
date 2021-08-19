@@ -16,7 +16,7 @@ package main
 
 import (
 	"fmt"
-    "os"
+	"os"
 	mc "github.com/kwesiRutledge/ModelChecking"
 )
 
@@ -46,17 +46,17 @@ func main() {
 		},
 	)
 
-    if err != nil {
-        fmt.Println(fmt.Sprintf("There was an issue creating the transition system: %v", err ))
-        os.Exit(1)
-    }
+	if err != nil {
+		fmt.Println(fmt.Sprintf("There was an issue creating the transition system: %v", err ))
+		os.Exit(1)
+	}
 
-    // Create an atomic proposition
-    ap2 := ts0.AP[1]
-    state2 := ts0.S[1]
+	// Create an atomic proposition
+	ap2 := ts0.AP[1]
+	state2 := ts0.S[1]
 
 	tf, _ := state2.Satisfies(ap2)
-    fmt.Println(tf)
+	fmt.Println(tf)
 }
 
 ```
