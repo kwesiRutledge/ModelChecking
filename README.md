@@ -5,7 +5,7 @@ An implementation of the algorithms in Baier and Katoen (and maybe more!). Feel 
 ## Including this module in your code
 
 ```
-"github.com/kwesiRutledge/ModelChecking"
+import "github.com/kwesiRutledge/ModelChecking"
 ```
 
 ## Examples
