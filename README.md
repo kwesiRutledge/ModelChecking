@@ -1,4 +1,4 @@
-# ModelChecking
+# ModelChecking [![Go Report Card](https://goreportcard.com/badge/github.com/kwesiRutledge/ModelChecking)](https://goreportcard.com/report/github.com/kwesiRutledge/ModelChecking)
 
 An implementation of the algorithms in Baier and Katoen (and maybe more!). Feel free to message me about desired functionality or errors that you might find.
 
