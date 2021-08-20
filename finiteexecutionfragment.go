@@ -39,10 +39,7 @@ func (fe FiniteExecutionFragment) Check() error {
 			)
 
 		}
-		fmt.Sprintf("%v not in Transition[%v][%v]", sip1.Name, si.Name, ai)
 	}
-
-	fmt.Sprintf("%v", len(fe.s)-1)
 
 	// Everything is okay!
 	return nil
