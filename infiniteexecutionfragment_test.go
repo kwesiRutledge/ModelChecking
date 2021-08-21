@@ -282,3 +282,42 @@ func TestInfiniteExecutionFragment_Check7(t *testing.T) {
 	}
 
 }
+
+/*
+TestInfiniteExecutionFragment_IsMaximal1
+Description:
+	Most valid Infinite Execution Fragments are maximal.
+	Given a valid infinite execution fragments, the function should correctly identify that the ief is maximal.
+*/
+func TestInfiniteExecutionFragment_IsMaximal1(t *testing.T) {
+	// Create Simple Transition System
+	ts0 := GetSimpleTS1()
+
+	s1 := ts0.S[0]
+	s2 := ts0.S[1]
+	a1 := ts0.Act[0]
+	a2 := ts0.Act[1]
+
+	// Execution
+
+	ief0 := InfiniteExecutionFragment{
+		UniquePrefix: FiniteExecutionFragment{
+			s: []TransitionSystemState{s1, s1},
+			a: []string{a1, a2},
+		},
+		RepeatingSuffix: FiniteExecutionFragment{
+			s: []TransitionSystemState{s2, s1},
+			a: []string{a1, a2},
+		},
+	}
+
+	maximalFlag, err := ief0.IsMaximal()
+	if err != nil {
+		t.Errorf("There was an issue checking if ief0 was maximal: %v", err.Error())
+	}
+
+	if !maximalFlag {
+		t.Errorf("The function did not identify that ief0 is maximal!")
+	}
+
+}

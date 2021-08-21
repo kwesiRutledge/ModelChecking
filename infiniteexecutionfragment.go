@@ -82,3 +82,19 @@ func (ief InfiniteExecutionFragment) Check() error {
 	// Everything is okay!
 	return nil
 }
+
+/*
+IsMaximal
+Description:
+	Determines whether or not the infinite execution fragment is maximal.
+*/
+func (ief InfiniteExecutionFragment) IsMaximal() (bool, error) {
+	// Check Execution Fragment
+	err := ief.Check()
+	if err != nil {
+		return false, err
+	}
+
+	// Return true
+	return true, nil
+}

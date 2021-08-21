@@ -44,3 +44,43 @@ func (fe FiniteExecutionFragment) Check() error {
 	// Everything is okay!
 	return nil
 }
+
+/*
+IsMaximal
+Description:
+	Identifies if the finite execution fragment is maximal. This is the case if
+	the final state is terminal.
+*/
+func (fe FiniteExecutionFragment) IsMaximal() (bool, error) {
+	// Check Execution Fragment
+	err := fe.Check()
+	if err != nil {
+		return false, err
+	}
+
+	// Verify that the last state is terminal.
+	n := len(fe.s)
+	finalState := fe.s[n-1]
+
+	return finalState.IsTerminal(), nil
+}
+
+/*
+IsInitial
+Description:
+	Identifies if the finite execution fragment is initial. This is the case if
+	the first state is from the initial state set of the transition system.
+*/
+func (fe FiniteExecutionFragment) IsInitial() (bool, error) {
+	// Check Execution Fragment
+	err := fe.Check()
+	if err != nil {
+		return false, err
+	}
+
+	// Verify that the last state is terminal.
+	firstState := fe.s[0]
+	System := firstState.System
+
+	return firstState.In(System.I), nil
+}

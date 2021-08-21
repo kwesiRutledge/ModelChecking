@@ -154,3 +154,139 @@ func TestFiniteExecutionFragment_Check5(t *testing.T) {
 	}
 
 }
+
+/*
+TestFiniteExectutionFragment_IsMaximal1
+Description:
+	Checks to see whether or not the final state in the execution is maximal.
+	The execution is maximal.
+*/
+func TestFiniteExectutionFragment_IsMaximal1(t *testing.T) {
+	// Create Simple Transition System
+	ts0 := GetSimpleTS2()
+
+	s1 := ts0.S[0]
+	s2 := ts0.S[1]
+	s3 := ts0.S[2]
+	s4 := ts0.S[3]
+	a1 := ts0.Act[0]
+	a2 := ts0.Act[1]
+	//a2 := ts0.Act[1]
+
+	// Execution
+	e0 := FiniteExecutionFragment{
+		s: []TransitionSystemState{s1, s2, s2, s3, s4},
+		a: []string{a2, a1, a2, a2},
+	}
+
+	maximalFlag, err := e0.IsMaximal()
+	if err != nil {
+		t.Errorf("There was an error running IsMaximal(): %v", err.Error())
+	}
+
+	if !maximalFlag {
+		t.Errorf("The function IsMaximal() did not correctly identify that the execution is maximal.")
+	}
+
+}
+
+/*
+TestFiniteExectutionFragment_IsMaximal2
+Description:
+	Checks whether or not the execution is maximal or not.
+	The input execution is NOT maximal.
+*/
+func TestFiniteExectutionFragment_IsMaximal2(t *testing.T) {
+	// Create Simple Transition System
+	ts0 := GetSimpleTS1()
+
+	s1 := ts0.S[0]
+	s2 := ts0.S[1]
+	s3 := ts0.S[2]
+	a1 := ts0.Act[0]
+	a2 := ts0.Act[1]
+	//a2 := ts0.Act[1]
+
+	// Execution
+	e0 := FiniteExecutionFragment{
+		s: []TransitionSystemState{s1, s2, s2, s3},
+		a: []string{a2, a1, a2},
+	}
+
+	maximalFlag, err := e0.IsMaximal()
+	if err != nil {
+		t.Errorf("There was an error running IsMaximal(): %v", err.Error())
+	}
+
+	if maximalFlag {
+		t.Errorf("The function IsMaximal() did not correctly identify that the execution is NOT maximal.")
+	}
+
+}
+
+/*
+TestFiniteExectutionFragment_IsInitial1
+Description:
+	Checks whether or not the execution is initial or not.
+	The input execution is NOT initial.
+*/
+func TestFiniteExectutionFragment_IsInitial1(t *testing.T) {
+	// Create Simple Transition System
+	ts0 := GetSimpleTS1()
+
+	s2 := ts0.S[1]
+	s3 := ts0.S[2]
+	a1 := ts0.Act[0]
+	a2 := ts0.Act[1]
+	//a2 := ts0.Act[1]
+
+	// Execution
+	e0 := FiniteExecutionFragment{
+		s: []TransitionSystemState{s2, s2, s3},
+		a: []string{a1, a2},
+	}
+
+	initialFlag, err := e0.IsInitial()
+	if err != nil {
+		t.Errorf("There was an error running IsInitial(): %v", err.Error())
+	}
+
+	if initialFlag {
+		t.Errorf("The function IsInitial() did not correctly identify that the execution is NOT initial.")
+	}
+
+}
+
+/*
+TestFiniteExectutionFragment_IsInitial2
+Description:
+	Checks whether or not the execution is initial or not.
+	The input execution is NOT initial.
+*/
+func TestFiniteExectutionFragment_IsInitial2(t *testing.T) {
+	// Create Simple Transition System
+	ts0 := GetSimpleTS1()
+
+	s1 := ts0.S[0]
+	s2 := ts0.S[1]
+	s3 := ts0.S[2]
+	a1 := ts0.Act[0]
+	a2 := ts0.Act[1]
+	//a2 := ts0.Act[1]
+
+	// Execution
+	e0 := FiniteExecutionFragment{
+		s: []TransitionSystemState{s1, s2, s2, s3},
+		a: []string{a2, a1, a2},
+	}
+
+	initialFlag, err := e0.IsInitial()
+	if err != nil {
+		t.Errorf("There was an error running IsInitial(): %v", err.Error())
+	}
+
+	if !initialFlag {
+		t.Errorf("The function IsInitial() did not correctly identify that the execution is initial.")
+	}
+
+}
