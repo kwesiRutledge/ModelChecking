@@ -11,19 +11,19 @@ func CreateSimpleCGM() (ConcurrentGameModel, error) {
 		[]string{"Drunk", "Sober"},
 		[]string{"Ride Horse", "Take Boat", "Follow Legion"},
 		map[string]map[string][]string{
-			"Agent1": map[string][]string{
-				"Rome":     []string{"Ride Horse", "Take Boat", "Follow Legion"},
-				"Florence": []string{"Ride Horse", "Take Boat"},
-				"Venice":   []string{"Take Boat"},
+			"Agent1": {
+				"Rome":     {"Ride Horse", "Take Boat", "Follow Legion"},
+				"Florence": {"Ride Horse", "Take Boat"},
+				"Venice":   {"Take Boat"},
 			},
-			"Agent2": map[string][]string{
-				"Rome":     []string{"Ride Horse", "Take Boat", "Follow Legion"},
-				"Florence": []string{"Ride Horse"},
-				"Venice":   []string{"Take Boat", "Follow Legion"},
+			"Agent2": {
+				"Rome":     {"Ride Horse", "Take Boat", "Follow Legion"},
+				"Florence": {"Ride Horse"},
+				"Venice":   {"Take Boat", "Follow Legion"},
 			},
 		},
 		map[string]map[string]string{
-			"Rome": map[string]string{
+			"Rome": {
 				"Ride Horse, Ride Horse":       "Florence",
 				"Ride Horse, Take Boat":        "Florence",
 				"Ride Horse, Follow Legion":    "Florence",
@@ -34,7 +34,7 @@ func CreateSimpleCGM() (ConcurrentGameModel, error) {
 				"Follow Legion, Take Boat":     "Rome",
 				"Follow Legion, Follow Legion": "Rome",
 			},
-			"Florence": map[string]string{
+			"Florence": {
 				"Ride Horse, Ride Horse":       "Rome",
 				"Ride Horse, Take Boat":        "Venice",
 				"Ride Horse, Follow Legion":    "Florence",
@@ -45,7 +45,7 @@ func CreateSimpleCGM() (ConcurrentGameModel, error) {
 				"Follow Legion, Take Boat":     "Florence",
 				"Follow Legion, Follow Legion": "Rome",
 			},
-			"Venice": map[string]string{
+			"Venice": {
 				"Ride Horse, Ride Horse":       "Rome",
 				"Ride Horse, Take Boat":        "Rome",
 				"Ride Horse, Follow Legion":    "Venice",
@@ -58,8 +58,8 @@ func CreateSimpleCGM() (ConcurrentGameModel, error) {
 			},
 		},
 		map[string][]string{
-			"Drunk": []string{"Rome"},
-			"Sober": []string{"Florence", "Venice"},
+			"Drunk": {"Rome"},
+			"Sober": {"Florence", "Venice"},
 		},
 	)
 
