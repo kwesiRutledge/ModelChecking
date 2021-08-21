@@ -10,11 +10,21 @@ import (
 	"fmt"
 )
 
+/*
+TransitionSystemState
+Description:
+	This type is an object which contains the Transition System's State.
+*/
 type TransitionSystemState struct {
 	Name   string
 	System *TransitionSystem
 }
 
+/*
+Equals
+Description:
+	Checks to see if two states in the transition system have the same name.
+*/
 func (s1 TransitionSystemState) Equals(s2 TransitionSystemState) bool {
 	return s1.Name == s2.Name
 }
@@ -45,7 +55,6 @@ Satisfies
 Description:
 	The state of the transition system satisfies the given formula.
 */
-
 func (stateIn TransitionSystemState) Satisfies(formula interface{}) (bool, error) {
 
 	// Input Processing
