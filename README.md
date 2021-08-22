@@ -2,6 +2,8 @@
 
 An implementation of the algorithms in Baier and Katoen (and maybe more!). Feel free to message me about desired functionality or errors that you might find.
 
+I will try to include a small tutorial into the [GitHub wiki](https://github.com/kwesiRutledge/ModelChecking/wiki) for people that are new to the project.
+
 ## Including this module in your code
 
 ```

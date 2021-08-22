@@ -134,22 +134,6 @@ func (ts TransitionSystem) CheckTransition() error {
 	return nil
 }
 
-func (ap AtomicProposition) SatisfactionHelper(stateIn TransitionSystemState) (bool, error) {
-	// Constants
-
-	SystemPointer := stateIn.System
-	LOfState := SystemPointer.L[stateIn]
-
-	// Find If ap is in LOfState
-	tf := false
-	for _, tempAP := range LOfState {
-		tf = tf || tempAP.Equals(ap)
-	}
-
-	return tf, nil
-
-}
-
 /*
 IsActionDeterministic
 Description:

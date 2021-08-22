@@ -20,9 +20,9 @@ Equals
 Description:
 	Compares the atomic propositions by their names.
 */
-func (ap1 AtomicProposition) Equals(ap2 AtomicProposition) bool {
+func (ap AtomicProposition) Equals(ap2 AtomicProposition) bool {
 
-	return ap1.Name == ap2.Name
+	return ap.Name == ap2.Name
 
 }
 
@@ -94,4 +94,21 @@ func Powerset(setOfAPs []AtomicProposition) [][]AtomicProposition {
 	AllCombinations = append(AllCombinations, []AtomicProposition{})
 
 	return AllCombinations
+}
+
+/*
+SatisfactionHelper
+Description:
+	Identifies if the state stateIn satisfies the atomic proposition ap.
+*/
+func (ap AtomicProposition) SatisfactionHelper(stateIn TransitionSystemState) (bool, error) {
+	// Constants
+
+	SystemPointer := stateIn.System
+	LOfState := SystemPointer.L[stateIn]
+
+	// Find If ap is in LOfState
+
+	return ap.In(LOfState), nil
+
 }
