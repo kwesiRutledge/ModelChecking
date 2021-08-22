@@ -25,8 +25,8 @@ Equals
 Description:
 	Checks to see if two states in the transition system have the same name.
 */
-func (s1 TransitionSystemState) Equals(s2 TransitionSystemState) bool {
-	return s1.Name == s2.Name
+func (stateIn TransitionSystemState) Equals(s2 TransitionSystemState) bool {
+	return stateIn.Name == s2.Name
 }
 
 /*
@@ -229,4 +229,62 @@ func (stateIn TransitionSystemState) IsTerminal() bool {
 	ancestors, _ := Post(stateIn)
 
 	return len(ancestors) == 0
+}
+
+/*
+IsReachable
+Description:
+	Identifies if the given state is reachable or not.
+Usage:
+	reachableFlag := state1.IsReachable()
+*/
+
+func (stateIn TransitionSystemState) IsReachable() bool {
+	// Get Transition System
+	System := stateIn.System
+
+	// Check to see if state is initial.
+	// If it is, then we are done.
+	if stateIn.In(System.I) {
+		return true
+	}
+
+	// Create loop variables
+	SI := []TransitionSystemState{stateIn}
+	SIm1 := []TransitionSystemState{}
+	Reachable := SI
+
+	// Create Loop Which Checks:
+	//	- If a predecessor of stateIn is in System.I
+	//	- Or if the predecessor set is equal to the
+	for {
+
+		// Compute the predecessors.
+		for _, si := range SI {
+			tempPre, _ := Pre(si)
+			for _, sPre := range tempPre {
+				Reachable = AppendIfUnique(Reachable, sPre)
+				SIm1 = AppendIfUnique(SIm1, sPre)
+			}
+		}
+
+		// Check to see if any predecessors are in the initial state set.
+		for _, sIm1 := range SIm1 {
+			if sIm1.In(System.I) {
+				return true
+			}
+		}
+
+		// Check if the predecessor set is a subset of the current set at i
+		// If it is, then exit. And the state is not reachable
+		if tf, _ := SliceSubset(SIm1, SI); tf {
+			break
+		}
+
+		// Prepare for next iteration of loop
+		SI = SIm1
+		SIm1 = []TransitionSystemState{}
+	}
+
+	return false
 }

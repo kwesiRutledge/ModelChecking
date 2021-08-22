@@ -126,3 +126,18 @@ func TestUtilities_SliceEquals2(t *testing.T) {
 		t.Errorf("The function incorrectly claims that the slices are not equal!")
 	}
 }
+
+/*
+TestUtilities_GetBeverageVendingMachineTS1
+Description:
+
+*/
+func TestUtilities_GetBeverageVendingMachineTS1(t *testing.T) {
+	// Create
+	ts0 := GetBeverageVendingMachineTS()
+
+	// Test
+	if len(ts0.S) != 4 {
+		t.Errorf("There were not four states in the transition system's state space.")
+	}
+}

@@ -256,3 +256,37 @@ func TestTransitionSystemState_IsTerminal1(t *testing.T) {
 	}
 
 }
+
+/*
+TestTransitionSystemState_IsReachable1
+Description:
+	Verifies that a state in the Vending Machine example is truly reachable.
+*/
+func TestTransitionSystemState_IsReachable1(t *testing.T) {
+	ts1 := GetBeverageVendingMachineTS()
+
+	beerState := ts1.S[2]
+
+	// Test to see if this is reachable
+	if !beerState.IsReachable() {
+		t.Errorf("The IsReachable() method did not correctly identify that the state was reachable.")
+	}
+
+}
+
+/*
+TestTransitionSystemState_IsReachable2
+Description:
+	Verifies that a state is unreachable.
+*/
+func TestTransitionSystemState_IsReachable2(t *testing.T) {
+	ts1 := GetSimpleTS2()
+
+	state5 := ts1.S[4]
+
+	// Test to see if this is reachable
+	if state5.IsReachable() {
+		t.Errorf("The IsReachable() method did not correctly identify that state5 was unreachable.")
+	}
+
+}
