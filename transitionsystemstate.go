@@ -16,17 +16,36 @@ Description:
 	This type is an object which contains the Transition System's State.
 */
 type TransitionSystemState struct {
-	Name   string
+	Value  interface{} // Can be the name of the state (i.e. a string), or a tuple of other TransitionSystem states.
 	System *TransitionSystem
 }
 
 /*
 Equals
 Description:
-	Checks to see if two states in the transition system have the same name.
+	Checks to see if two states in the transition system have the same value.
 */
 func (stateIn TransitionSystemState) Equals(s2 TransitionSystemState) bool {
-	return stateIn.Name == s2.Name
+	switch stateIn.Value.(type) {
+	case string:
+		return stateIn.Value == s2.Value
+	case []TransitionSystemState:
+		stateInValueTuple := stateIn.Value.([]TransitionSystemState)
+		s2ValueTuple := s2.Value.([]TransitionSystemState)
+
+		for stateTupleIndex, tuple1State := range stateInValueTuple {
+			if !tuple1State.Equals(s2ValueTuple[stateTupleIndex]) {
+				return false
+			}
+		}
+		// If all elements of the tuple are equal,
+		// then return true.
+		return true
+	default:
+		fmt.Println("Equals() was acalled with an unexpected type!")
+		return false
+	}
+
 }
 
 /*

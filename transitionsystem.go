@@ -35,14 +35,14 @@ func GetTransitionSystem(stateNames []string, actionNames []string, transitionMa
 	// Create List of States
 	var S []TransitionSystemState //List Of States
 	for _, stateName := range stateNames {
-		S = append(S, TransitionSystemState{Name: stateName, System: &ts})
+		S = append(S, TransitionSystemState{Value: stateName, System: &ts})
 	}
 	ts.S = S
 
 	// Create List of Initial States
 	var I []TransitionSystemState
 	for _, stateName := range initialStateList {
-		I = append(I, TransitionSystemState{Name: stateName, System: &ts})
+		I = append(I, TransitionSystemState{Value: stateName, System: &ts})
 	}
 	ts.I = I
 
@@ -57,12 +57,12 @@ func GetTransitionSystem(stateNames []string, actionNames []string, transitionMa
 	// Create Transition Map
 	Transition := make(map[TransitionSystemState]map[string][]TransitionSystemState)
 	for siName, perStateMap := range transitionMap {
-		si := TransitionSystemState{Name: siName, System: &ts}
+		si := TransitionSystemState{Value: siName, System: &ts}
 		tempActionMap := make(map[string][]TransitionSystemState)
 		for actionName, stateArray := range perStateMap {
 			var tempStates []TransitionSystemState
 			for _, siPlus1Name := range stateArray {
-				tempStates = append(tempStates, TransitionSystemState{Name: siPlus1Name, System: &ts})
+				tempStates = append(tempStates, TransitionSystemState{Value: siPlus1Name, System: &ts})
 			}
 			tempActionMap[actionName] = tempStates
 		}
@@ -78,7 +78,7 @@ func GetTransitionSystem(stateNames []string, actionNames []string, transitionMa
 	// Create Label Values
 	fullLabelMap := make(map[TransitionSystemState][]AtomicProposition)
 	for stateValue, associatedAPs := range labelMap {
-		tempState := TransitionSystemState{Name: stateValue, System: &ts}
+		tempState := TransitionSystemState{Value: stateValue, System: &ts}
 		fullLabelMap[tempState] = StringSliceToAPs(associatedAPs)
 	}
 	ts.L = fullLabelMap
@@ -94,7 +94,7 @@ Description:
 func (ts TransitionSystem) CheckI() error {
 	for _, Istate := range ts.I {
 		if !Istate.In(ts.S) {
-			return fmt.Errorf("The state %v is not in the state set of the transition system!", Istate.Name)
+			return fmt.Errorf("The state %v is not in the state set of the transition system!", Istate.Value)
 		}
 	}
 	// If we finish checking I,
@@ -111,7 +111,7 @@ func (ts TransitionSystem) CheckTransition() error {
 	// Checks that all source states are from the state set.
 	for state1 := range ts.Transition {
 		if !state1.In(ts.S) {
-			return fmt.Errorf("One of the source states in the Transition was not in the state set: %v", state1.Name)
+			return fmt.Errorf("One of the source states in the Transition was not in the state set: %v", state1.Value)
 		}
 	}
 
@@ -124,7 +124,7 @@ func (ts TransitionSystem) CheckTransition() error {
 			// Search through all target states to see if they are in the state set
 			for _, targetState := range targetStates {
 				if !targetState.In(ts.S) {
-					return fmt.Errorf("There is an ancestor state \"%v\" which is not part of the state.", targetState.Name)
+					return fmt.Errorf("There is an ancestor state \"%v\" which is not part of the state.", targetState.Value)
 				}
 			}
 		}

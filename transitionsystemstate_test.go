@@ -154,7 +154,7 @@ func TestTransitionSystemState_Pre1(t *testing.T) {
 	}
 
 	if !predecessors[0].Equals(state3) {
-		t.Errorf("Expected for the predecessor to be state3 but received the state%v.", predecessors[0].Name)
+		t.Errorf("Expected for the predecessor to be state3 but received the state%v.", predecessors[0].Value)
 	}
 
 }
@@ -287,6 +287,64 @@ func TestTransitionSystemState_IsReachable2(t *testing.T) {
 	// Test to see if this is reachable
 	if state5.IsReachable() {
 		t.Errorf("The IsReachable() method did not correctly identify that state5 was unreachable.")
+	}
+
+}
+
+/*
+TestTransitionSystemState_Equals1
+Description:
+	Tests to see if two "product" states are equal to one another.
+	The two sample tuples are equal.
+*/
+func TestTransitionSystemState_Equals1(t *testing.T) {
+	ts1 := GetBeverageVendingMachineTS()
+
+	s0 := ts1.S[0]
+	s1 := ts1.S[1]
+
+	prodState0 := TransitionSystemState{
+		Value:  []TransitionSystemState{s0, s1},
+		System: &ts1,
+	}
+
+	prodState1 := TransitionSystemState{
+		Value:  []TransitionSystemState{s0, s1},
+		System: &ts1,
+	}
+
+	// Test
+	if !prodState0.Equals(prodState1) {
+		t.Errorf("The Equals function incorrectly claims that the two product states are not equal to one another.")
+	}
+
+}
+
+/*
+TestTransitionSystemState_Equals2
+Description:
+	Tests to see if two "product" states are equal to one another.
+	The two sample tuples are NOT equal.
+*/
+func TestTransitionSystemState_Equals2(t *testing.T) {
+	ts1 := GetBeverageVendingMachineTS()
+
+	s0 := ts1.S[0]
+	s1 := ts1.S[1]
+
+	prodState0 := TransitionSystemState{
+		Value:  []TransitionSystemState{s0, s1},
+		System: &ts1,
+	}
+
+	prodState1 := TransitionSystemState{
+		Value:  []TransitionSystemState{s1, s1},
+		System: &ts1,
+	}
+
+	// Test
+	if prodState0.Equals(prodState1) {
+		t.Errorf("The Equals function incorrectly claims that the two product states are equal to one another.")
 	}
 
 }

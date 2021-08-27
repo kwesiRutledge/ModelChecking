@@ -86,7 +86,9 @@ func SliceEquals(slice1, slice2 interface{}) (bool, error) {
 /*
 FindInSlice
 Description:
-
+	Identifies if the  input xIn is in the slice sliceIn.
+	If it is, then this function returns the index such that xIn = sliceIn[index] and the bool value true.
+	If it is not, then this function returns the index -1 and the boolean value false.
 */
 func FindInSlice(xIn interface{}, sliceIn interface{}) (int, bool) {
 

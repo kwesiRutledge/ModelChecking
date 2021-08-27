@@ -32,7 +32,7 @@ func TestTransitionSystem_GetState2(t *testing.T) {
 
 	// Try to get a state which is outside of the allowable range.
 	tempState := ts0.S[1]
-	if tempState.Name != "2" {
+	if tempState.Value != "2" {
 		t.Errorf("The value of the correct state (2) was not saved in the state.")
 	}
 }
