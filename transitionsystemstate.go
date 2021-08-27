@@ -116,9 +116,9 @@ Post
 Description:
 	Finds the set of states that can follow a given state (or set of states).
 Usage:
-
+	tempPost, err := Post( s0 )
+	tempPost, err := Post( s0 , a0 )
 */
-
 func Post(SorSA ...interface{}) ([]TransitionSystemState, error) {
 	switch len(SorSA) {
 	case 1:
@@ -178,9 +178,9 @@ Pre
 Description:
 	Finds the set of states that can precede a given state (or set of states).
 Usage:
-
+	tempPreSet , err := Pre( s0 )
+	tempPreSet , err := Pre( s0 , a0 )
 */
-
 func Pre(SorSA ...interface{}) ([]TransitionSystemState, error) {
 	switch len(SorSA) {
 	case 1:
@@ -257,7 +257,6 @@ Description:
 Usage:
 	reachableFlag := state1.IsReachable()
 */
-
 func (stateIn TransitionSystemState) IsReachable() bool {
 	// Get Transition System
 	System := stateIn.System

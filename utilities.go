@@ -146,3 +146,34 @@ func GetBeverageVendingMachineTS() TransitionSystem {
 	return ts0
 
 }
+
+/*
+SliceCartesianProduct
+Description:
+
+*/
+func SliceCartesianProduct(slice1, slice2 interface{}) (interface{}, error) {
+	switch x := slice1.(type) {
+	// case []AtomicProposition:
+
+	case []TransitionSystemState:
+		var productSet [][]TransitionSystemState
+		slice1Converted, ok1 := slice1.([]TransitionSystemState)
+		slice2Converted, ok2 := slice2.([]TransitionSystemState)
+
+		if (!ok1) || (!ok2) {
+			return nil, fmt.Errorf("There was an issue converting either slice1 (%v) or slice2 (%v) to []TransitionSystemState objects.", ok1, ok2)
+		}
+
+		for _, item1 := range slice1Converted {
+			for _, item2 := range slice2Converted {
+				productSet = append(productSet, []TransitionSystemState{item1, item2})
+			}
+		}
+		return productSet, nil
+
+	default:
+		return false, fmt.Errorf("Unexpected type given to SliceSubset(): %v", x)
+	}
+
+}

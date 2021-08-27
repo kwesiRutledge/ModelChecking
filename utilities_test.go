@@ -130,7 +130,7 @@ func TestUtilities_SliceEquals2(t *testing.T) {
 /*
 TestUtilities_GetBeverageVendingMachineTS1
 Description:
-
+	Verifies that the beverage vending machine transition system has the appropriate number of states.
 */
 func TestUtilities_GetBeverageVendingMachineTS1(t *testing.T) {
 	// Create
@@ -139,5 +139,59 @@ func TestUtilities_GetBeverageVendingMachineTS1(t *testing.T) {
 	// Test
 	if len(ts0.S) != 4 {
 		t.Errorf("There were not four states in the transition system's state space.")
+	}
+}
+
+/*
+TestUtilities_SliceCartesianProduct1
+Description:
+	Verifies that a simple Cartesian product has 4 elements.
+*/
+func TestUtilities_SliceCartesianProduct1(t *testing.T) {
+	// Create
+	ts0 := GetBeverageVendingMachineTS()
+
+	s0 := ts0.S[0]
+	s1 := ts0.S[1]
+
+	S1 := []TransitionSystemState{s0, s1}
+
+	// Test
+	cp1, err := SliceCartesianProduct(S1, S1)
+	if err != nil {
+		t.Errorf("There was an error computing the cartesian product: %v", err)
+	}
+
+	cp1Converted := cp1.([][]TransitionSystemState)
+
+	if len(cp1Converted) != 4 {
+		t.Errorf("There were not 4 tuples in the cartesian product. Instead there were %v.", len(cp1Converted))
+	}
+}
+
+/*
+TestUtilities_SliceCartesianProduct1
+Description:
+	Verifies that a simple Cartesian product has the correct tuple as its first element.
+*/
+func TestUtilities_SliceCartesianProduct2(t *testing.T) {
+	// Create
+	ts0 := GetBeverageVendingMachineTS()
+
+	s0 := ts0.S[0]
+	s1 := ts0.S[1]
+
+	S1 := []TransitionSystemState{s0, s1}
+
+	// Test
+	cp1, err := SliceCartesianProduct(S1, S1)
+	if err != nil {
+		t.Errorf("There was an error computing the cartesian product: %v", err)
+	}
+
+	cp1Converted := cp1.([][]TransitionSystemState)
+
+	if (!s0.Equals(cp1Converted[0][0])) || (!s0.Equals(cp1Converted[0][1])) {
+		t.Errorf("There were not 4 tuples in the cartesian product. Instead there were %v.", len(cp1Converted))
 	}
 }
