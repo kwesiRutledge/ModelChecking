@@ -93,20 +93,23 @@ func (stateIn TransitionSystemState) Satisfies(formula interface{}) (bool, error
 }
 
 /*
-AppendIfUnique
+AppendIfUniqueTo
 Description:
 	Appends to the input slice sliceIn if and only if the new state
 	is actually a unique state.
+Usage:
+	newSlice := stateIn.AppendIfUniqueTo(sliceIn)
 */
-func AppendIfUnique(sliceIn []TransitionSystemState, stateIn TransitionSystemState) []TransitionSystemState {
-	// Check to see if the State is equal to any of the ones in the list.
-	for _, stateFromSlice := range sliceIn {
-		if stateFromSlice.Equals(stateIn) {
+func (stateIn TransitionSystemState) AppendIfUniqueTo(sliceIn []TransitionSystemState) []TransitionSystemState {
+
+	for _, tempState := range sliceIn {
+		if tempState.Equals(stateIn) {
 			return sliceIn
 		}
+
 	}
 
-	// If none of the states in sliceIn are equal to stateIn, then return the appended version of sliceIn.
+	//If all checks were passed
 	return append(sliceIn, stateIn)
 
 }
@@ -140,7 +143,7 @@ func Post(SorSA ...interface{}) ([]TransitionSystemState, error) {
 				return []TransitionSystemState{}, err
 			}
 			for _, postElt := range tempPost {
-				nextStates = AppendIfUnique(nextStates, postElt)
+				nextStates = postElt.AppendIfUniqueTo(nextStates)
 			}
 		}
 
@@ -163,7 +166,7 @@ func Post(SorSA ...interface{}) ([]TransitionSystemState, error) {
 		tValues := System.Transition[stateIn][actionIn]
 		var nextStates []TransitionSystemState
 		for _, nextState := range tValues {
-			nextStates = AppendIfUnique(nextStates, nextState)
+			nextStates = nextState.AppendIfUniqueTo(nextStates)
 		}
 
 		return nextStates, nil
@@ -202,7 +205,7 @@ func Pre(SorSA ...interface{}) ([]TransitionSystemState, error) {
 				return []TransitionSystemState{}, err
 			}
 			for _, preElt := range tempPre {
-				predecessors = AppendIfUnique(predecessors, preElt)
+				predecessors = preElt.AppendIfUniqueTo(predecessors)
 			}
 		}
 
@@ -281,8 +284,8 @@ func (stateIn TransitionSystemState) IsReachable() bool {
 		for _, si := range SI {
 			tempPre, _ := Pre(si)
 			for _, sPre := range tempPre {
-				Reachable = AppendIfUnique(Reachable, sPre)
-				SIm1 = AppendIfUnique(SIm1, sPre)
+				Reachable = sPre.AppendIfUniqueTo(Reachable)
+				SIm1 = sPre.AppendIfUniqueTo(SIm1)
 			}
 		}
 

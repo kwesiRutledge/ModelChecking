@@ -135,6 +135,29 @@ func (ts TransitionSystem) CheckTransition() error {
 }
 
 /*
+Check
+Description:
+	Checks the following components of the transition system object:
+	- Initial State Set is a Subset of the State Space
+	- Transitions map properly between the state space and the action space to the next state space
+*/
+func (ts TransitionSystem) Check() error {
+	// Check Initial state Set
+	err := ts.CheckI()
+	if err != nil {
+		return err
+	}
+
+	// Check Transition Map
+	err = ts.CheckTransition()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+/*
 IsActionDeterministic
 Description:
 	Determines if the transition system is action deterministic:
@@ -199,4 +222,38 @@ func (ts TransitionSystem) IsAPDeterministic() bool {
 	}
 
 	return true
+}
+
+func (ts TransitionSystem) Interleave(ts2 TransitionSystem) (TransitionSystem, error) {
+	// Check the Component Transition Systems
+	err1 := ts.Check()
+	err2 := ts2.Check()
+	if (err1 != nil) || (err2 != nil) {
+		return TransitionSystem{}, fmt.Errorf("There was an issue checking ts and ts2.\n From ts: %v\n From ts2: %v", err1, err2)
+	}
+
+	// Create initial interleaved TS
+	var interleavedTS TransitionSystem
+
+	// Create A The State Space from The Cartesian Product
+	tempCartesianProduct, err := SliceCartesianProduct(ts.S, ts2.S)
+	if err != nil {
+		return interleavedTS, err
+	}
+	tempCPAsStateSlice := tempCartesianProduct.([][]TransitionSystemState)
+
+	var S []TransitionSystemState
+	for _, tempTuple := range tempCPAsStateSlice {
+		S = append(S,
+			TransitionSystemState{
+				Value:  tempTuple,
+				System: &interleavedTS,
+			},
+		)
+	}
+	interleavedTS.S = S
+
+	// Work on Action Set
+
+	return interleavedTS, nil
 }

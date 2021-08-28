@@ -1,6 +1,7 @@
 package modelchecking
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -425,4 +426,43 @@ func TestTransitionSystem_CheckTransition1(t *testing.T) {
 		t.Errorf("The error was not what we expected: %v", err.Error())
 	}
 
+}
+
+/*
+TestTransitionSystem_Check1
+Description:
+	Testing that transition system check function works outside of the constructor.
+*/
+func TestTransitionSystem_Check1(t *testing.T) {
+	ts0 := GetBeverageVendingMachineTS()
+	IStateName := "Jay"
+	ts0.I = []TransitionSystemState{
+		TransitionSystemState{IStateName, &ts0},
+	}
+
+	err := ts0.Check()
+	if err == nil {
+		t.Errorf("The algorithm did not catch the Transition issue!")
+	}
+
+	if err.Error() != fmt.Sprintf("The state %v is not in the state set of the transition system!", IStateName) {
+		t.Errorf("The error was not what we expected: %v", err.Error())
+	}
+
+}
+
+func TestTransitionSystem_Interleave1(t *testing.T) {
+	// Constants
+	ts0 := GetBeverageVendingMachineTS()
+	ts1 := GetSimpleTS1()
+
+	// Algorithm
+	ts2, err := ts0.Interleave(ts1)
+	if err != nil {
+		t.Errorf("Error using Interleave: %v", err)
+	}
+
+	if len(ts2.S) == 9 {
+		t.Errorf("Expected for there to be 9 states in the interleaved transition system, but found %v.", len(ts2.S))
+	}
 }

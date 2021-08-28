@@ -177,3 +177,33 @@ func SliceCartesianProduct(slice1, slice2 interface{}) (interface{}, error) {
 	}
 
 }
+
+/*
+AppendIfUnique
+Description:
+	Appends to the input slice sliceIn if and only if the new state
+	is actually a unique state.
+*/
+func AppendIfUnique(sliceIn []string, xIn ...string) []string {
+
+	newSlice := sliceIn
+
+	var xElementInSlice bool
+	for _, xElement := range xIn {
+		xElementInSlice = false
+		// Check to see if the State is equal to any of the ones in the list.
+		for _, stringFromSlice := range sliceIn {
+			if stringFromSlice == xElement {
+				xElementInSlice = true
+			}
+
+		}
+
+		if !xElementInSlice {
+			newSlice = append(newSlice, xElement)
+		}
+	}
+
+	return newSlice
+
+}
