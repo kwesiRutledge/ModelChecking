@@ -309,3 +309,30 @@ func (stateIn TransitionSystemState) IsReachable() bool {
 
 	return false
 }
+
+/*
+String
+Description:
+	Returns the value of the state if the value is of type string.
+	Otherwise, this returns the value of each part of the Value
+*/
+func (stateIn TransitionSystemState) String() string {
+	tempVal := ""
+
+	switch stateIn.Value.(type) {
+	case string:
+		tempVal = stateIn.Value.(string)
+	case []TransitionSystemState:
+		stateSlice := stateIn.Value.([]TransitionSystemState)
+		if len(stateSlice) > 1 {
+			tempVal = stateSlice[0].String()
+			for _, tempState := range stateSlice[1:] {
+				tempVal = fmt.Sprintf("%v x %v", tempVal, tempState.String())
+			}
+		}
+	default:
+		//Do nothing
+	}
+
+	return tempVal
+}

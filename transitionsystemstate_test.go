@@ -348,3 +348,42 @@ func TestTransitionSystemState_Equals2(t *testing.T) {
 	}
 
 }
+
+/*
+TestTransitionSystemState_String1
+Description:
+	Tests the String() function to make sure that it works properly.
+*/
+func TestTransitionSystemState_String1(t *testing.T) {
+	ts1 := GetBeverageVendingMachineTS()
+
+	s0 := ts1.S[0]
+
+	// Verify that the first state's string is "pay"
+	// fmt.Println(ts1)
+	if s0.String() != "pay" {
+		t.Errorf("The String() evaluation of s0 is \"%v\". Expected  \"pay\".", s0)
+	}
+}
+
+/*
+TestTransitionSystemState_String2
+Description:
+	Tests the String() function to make sure that it works properly for a state that has
+	two states in it as a tuple.
+*/
+func TestTransitionSystemState_String2(t *testing.T) {
+	ts1 := GetBeverageVendingMachineTS()
+
+	s0 := ts1.S[0]
+	s1 := ts1.S[1]
+
+	s2 := TransitionSystemState{
+		Value: []TransitionSystemState{s0, s1},
+	}
+
+	// Verify that the first state's string is "pay"
+	if s2.String() != "pay x select" {
+		t.Errorf("The String() evaluation of s0 is \"%v\". Expected  \"pay x select\".", s2)
+	}
+}
