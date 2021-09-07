@@ -235,7 +235,7 @@ func (ts TransitionSystem) Interleave(ts2 TransitionSystem) (TransitionSystem, e
 	// Create initial interleaved TS
 	var interleavedTS TransitionSystem
 
-	// Create A The State Space from The Cartesian Product
+	// Create The State Space from The Cartesian Product
 	tempCartesianProduct, err := SliceCartesianProduct(ts.S, ts2.S)
 	if err != nil {
 		return interleavedTS, err
@@ -254,6 +254,9 @@ func (ts TransitionSystem) Interleave(ts2 TransitionSystem) (TransitionSystem, e
 	interleavedTS.S = S
 
 	// Work on Action Set
+	var Act []string
+	Act = AppendIfUnique(Act, ts.Act...)
+	Act = AppendIfUnique(Act, ts2.Act...)
 
 	return interleavedTS, nil
 }

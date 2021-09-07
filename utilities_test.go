@@ -195,3 +195,95 @@ func TestUtilities_SliceCartesianProduct2(t *testing.T) {
 		t.Errorf("There were not 4 tuples in the cartesian product. Instead there were %v.", len(cp1Converted))
 	}
 }
+
+/*
+TestUtilities_AppendIfUnique1
+Description:
+	Verifies that the Append function works properly for a single string to AppendIfUnique.
+	The extra string is NOT part of the original list.
+*/
+func TestUtilities_AppendIfUnique1(t *testing.T) {
+	// Create a simple slice of strings
+	slice1 := []string{"A", "B", "C"}
+	string1 := "Temp"
+
+	// Append string.
+	slice2 := AppendIfUnique(slice1, string1)
+
+	if len(slice2) != 4 {
+		t.Errorf("The new slice was expected to have length %v, but was %v instead.", 4, len(slice2))
+	}
+
+	if slice2[len(slice2)-1] != string1 {
+		t.Errorf("The new slice should have final element \"%v\", but was \"%v\".", string1, slice2[len(slice2)-1])
+	}
+}
+
+/*
+TestUtilities_AppendIfUnique2
+Description:
+	Verifies that the Append function works properly for a single string to AppendIfUnique.
+	The extra string IS part of the original list.
+*/
+func TestUtilities_AppendIfUnique2(t *testing.T) {
+	// Create a simple slice of strings
+	slice1 := []string{"A", "B", "C"}
+	string1 := "A"
+
+	// Append string.
+	slice2 := AppendIfUnique(slice1, string1)
+
+	if len(slice2) != 3 {
+		t.Errorf("The new slice was expected to have length %v, but was %v instead.", 3, len(slice2))
+	}
+
+	if slice2[len(slice2)-1] != "C" {
+		t.Errorf("The new slice should have final element \"%v\", but was \"%v\".", "C", slice2[len(slice2)-1])
+	}
+}
+
+/*
+TestUtilities_AppendIfUnique3
+Description:
+	Verifies that the Append function works properly for a single string to AppendIfUnique.
+	The extra string IS NOT COMPLETELY part of the original list.
+*/
+func TestUtilities_AppendIfUnique3(t *testing.T) {
+	// Create a simple slice of strings
+	slice1 := []string{"A", "B", "C"}
+	slice2 := []string{"B", "D"}
+
+	// Append string.
+	slice3 := AppendIfUnique(slice1, slice2...)
+
+	if len(slice3) != 4 {
+		t.Errorf("The new slice was expected to have length %v, but was %v instead.", 4, len(slice3))
+	}
+
+	if slice3[len(slice3)-1] != slice2[len(slice2)-1] {
+		t.Errorf("The new slice should have final element \"%v\", but was \"%v\".", slice2[len(slice2)-1], slice3[len(slice3)-1])
+	}
+}
+
+/*
+TestUtilities_AppendIfUnique4
+Description:
+	Verifies that the Append function works properly for a single string to AppendIfUnique.
+	The extra string IS COMPLETELY part of the original list.
+*/
+func TestUtilities_AppendIfUnique4(t *testing.T) {
+	// Create a simple slice of strings
+	slice1 := []string{"A", "B", "C"}
+	slice2 := []string{"B", "A"}
+
+	// Append string.
+	slice3 := AppendIfUnique(slice1, slice2...)
+
+	if len(slice3) != 3 {
+		t.Errorf("The new slice was expected to have length %v, but was %v instead.", 3, len(slice3))
+	}
+
+	if slice3[len(slice3)-1] != "C" {
+		t.Errorf("The new slice should have final element \"%v\", but was \"%v\".", "C", slice3[len(slice3)-1])
+	}
+}
