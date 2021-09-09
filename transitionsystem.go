@@ -35,14 +35,14 @@ func GetTransitionSystem(stateNames []string, actionNames []string, transitionMa
 	// Create List of States
 	var S []TransitionSystemState //List Of States
 	for _, stateName := range stateNames {
-		S = append(S, TransitionSystemState{Value: stateName, System: &ts})
+		S = append(S, TransitionSystemState{Name: stateName, System: &ts})
 	}
 	ts.S = S
 
 	// Create List of Initial States
 	var I []TransitionSystemState
 	for _, stateName := range initialStateList {
-		I = append(I, TransitionSystemState{Value: stateName, System: &ts})
+		I = append(I, TransitionSystemState{Name: stateName, System: &ts})
 	}
 	ts.I = I
 
@@ -57,12 +57,12 @@ func GetTransitionSystem(stateNames []string, actionNames []string, transitionMa
 	// Create Transition Map
 	Transition := make(map[TransitionSystemState]map[string][]TransitionSystemState)
 	for siName, perStateMap := range transitionMap {
-		si := TransitionSystemState{Value: siName, System: &ts}
+		si := TransitionSystemState{Name: siName, System: &ts}
 		tempActionMap := make(map[string][]TransitionSystemState)
 		for actionName, stateArray := range perStateMap {
 			var tempStates []TransitionSystemState
 			for _, siPlus1Name := range stateArray {
-				tempStates = append(tempStates, TransitionSystemState{Value: siPlus1Name, System: &ts})
+				tempStates = append(tempStates, TransitionSystemState{Name: siPlus1Name, System: &ts})
 			}
 			tempActionMap[actionName] = tempStates
 		}
@@ -77,8 +77,8 @@ func GetTransitionSystem(stateNames []string, actionNames []string, transitionMa
 
 	// Create Label Values
 	fullLabelMap := make(map[TransitionSystemState][]AtomicProposition)
-	for stateValue, associatedAPs := range labelMap {
-		tempState := TransitionSystemState{Value: stateValue, System: &ts}
+	for stateName, associatedAPs := range labelMap {
+		tempState := TransitionSystemState{Name: stateName, System: &ts}
 		fullLabelMap[tempState] = StringSliceToAPs(associatedAPs)
 	}
 	ts.L = fullLabelMap
@@ -94,7 +94,7 @@ Description:
 func (ts TransitionSystem) CheckI() error {
 	for _, Istate := range ts.I {
 		if !Istate.In(ts.S) {
-			return fmt.Errorf("The state %v is not in the state set of the transition system!", Istate.Value)
+			return fmt.Errorf("The state %v is not in the state set of the transition system!", Istate)
 		}
 	}
 	// If we finish checking I,
@@ -111,7 +111,7 @@ func (ts TransitionSystem) CheckTransition() error {
 	// Checks that all source states are from the state set.
 	for state1 := range ts.Transition {
 		if !state1.In(ts.S) {
-			return fmt.Errorf("One of the source states in the Transition was not in the state set: %v", state1.Value)
+			return fmt.Errorf("One of the source states in the Transition was not in the state set: %v", state1)
 		}
 	}
 
@@ -124,7 +124,7 @@ func (ts TransitionSystem) CheckTransition() error {
 			// Search through all target states to see if they are in the state set
 			for _, targetState := range targetStates {
 				if !targetState.In(ts.S) {
-					return fmt.Errorf("There is an ancestor state \"%v\" which is not part of the state.", targetState.Value)
+					return fmt.Errorf("There is an ancestor state \"%v\" which is not part of the state.", targetState)
 				}
 			}
 		}
@@ -235,21 +235,16 @@ func (ts TransitionSystem) Interleave(ts2 TransitionSystem) (TransitionSystem, e
 	// Create initial interleaved TS
 	var interleavedTS TransitionSystem
 
-	// Create The State Space from The Cartesian Product
-	tempCartesianProduct, err := SliceCartesianProduct(ts.S, ts2.S)
-	if err != nil {
-		return interleavedTS, err
-	}
-	tempCPAsStateSlice := tempCartesianProduct.([][]TransitionSystemState)
-
+	// Create The State Space from The Cartesian Product of these two state spaces
 	var S []TransitionSystemState
-	for _, tempTuple := range tempCPAsStateSlice {
-		S = append(S,
-			TransitionSystemState{
-				Value:  tempTuple,
-				System: &interleavedTS,
-			},
-		)
+	for _, s1 := range ts.S {
+		for _, s2 := range ts2.S {
+			S = append(S,
+				TransitionSystemState{
+					Name:   fmt.Sprintf("(%v,%v)", s1, s2),
+					System: &interleavedTS,
+				})
+		}
 	}
 	interleavedTS.S = S
 
@@ -257,6 +252,64 @@ func (ts TransitionSystem) Interleave(ts2 TransitionSystem) (TransitionSystem, e
 	var Act []string
 	Act = AppendIfUnique(Act, ts.Act...)
 	Act = AppendIfUnique(Act, ts2.Act...)
+	interleavedTS.Act = Act
+
+	// Work on Transition based on the rules
+	//	1. First state s1 changes to s1_prime if s1_prime in Post(s1,a)
+
+	Transition := make(map[TransitionSystemState]map[string][]TransitionSystemState)
+	// Create transitions for the first system actions.
+	for _, s1 := range ts.S {
+		for _, s2 := range ts2.S {
+			tempProductState := TransitionSystemState{
+				Name:   fmt.Sprintf("(%v,%v)", s1, s2),
+				System: &interleavedTS,
+			}
+
+			tempActionMap := make(map[string][]TransitionSystemState)
+			for _, actionName := range interleavedTS.Act {
+				// Check to see if actionName is from ts.
+				if _, tf := FindInSlice(actionName, ts.Act); tf {
+					// Find all ancestors under this action
+					s1Ancestors, err := Post(s1, actionName)
+					if err != nil {
+						return interleavedTS, err
+					}
+
+					// Use ancestors to create tuple
+					for _, s1Ancestor := range s1Ancestors {
+						tempActionMap[actionName] = append(tempActionMap[actionName],
+							TransitionSystemState{
+								Name:   fmt.Sprintf("(%v,%v)", s1Ancestor, s2),
+								System: &interleavedTS,
+							})
+					}
+				}
+				// Check to see if action Name is from ts2
+				if _, tf := FindInSlice(actionName, ts2.Act); tf {
+					// Find all ancestors under this action
+					s2Ancestors, err := Post(s2, actionName)
+					if err != nil {
+						return interleavedTS, err
+					}
+
+					// Use ancestors to create tuple
+					for _, s2Ancestor := range s2Ancestors {
+						tempActionMap[actionName] = append(tempActionMap[actionName],
+							TransitionSystemState{
+								Name:   fmt.Sprintf("(%v,%v)", s1, s2Ancestor),
+								System: &interleavedTS,
+							},
+						)
+					}
+				}
+			}
+			// Append map to the new transition
+			Transition[tempProductState] = tempActionMap
+
+		}
+	}
+	interleavedTS.Transition = Transition
 
 	return interleavedTS, nil
 }

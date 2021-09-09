@@ -111,7 +111,7 @@ func TestInfiniteExecutionFragment_Check3(t *testing.T) {
 	} else {
 		if err.Error() != fmt.Sprintf(
 			"There is an invalid transition in UniquePrefix between state %v and state %v with action %v. (i.e. %v not in Transition[%v][%v]).",
-			s1.Value, s2.Value, a1, s2.Value, s1.Value, a1,
+			s1, s2, a1, s2, s1, a1,
 		) {
 			t.Errorf("The value of err was unexpected: %v", err)
 		}
@@ -154,7 +154,7 @@ func TestInfiniteExecutionFragment_Check4(t *testing.T) {
 	} else {
 		if err.Error() != fmt.Sprintf(
 			"The transition from the prefix to the suffix was invalid! (i.e. %v not in Transition[%v][%v]).",
-			s1.Value, s1.Value, a2,
+			s1, s1, a2,
 		) {
 			t.Errorf("The value of err was unexpected: %v", err)
 		}
@@ -197,7 +197,7 @@ func TestInfiniteExecutionFragment_Check5(t *testing.T) {
 	} else {
 		if err.Error() != fmt.Sprintf(
 			"There is an invalid transition in RepeatingSuffix between state %v and state %v with action %v. (i.e. %v not in Transition[%v][%v]).",
-			s2.Value, s1.Value, a2, s1.Value, s2.Value, a2,
+			s2, s1, a2, s1, s2, a2,
 		) {
 			t.Errorf("The value of err was unexpected: %v", err)
 		}
@@ -240,7 +240,7 @@ func TestInfiniteExecutionFragment_Check6(t *testing.T) {
 	} else {
 		if err.Error() != fmt.Sprintf(
 			"The transition from the suffix end to the suffix beginning was invalid! (i.e. %v not in Transition[%v][%v]).",
-			s2.Value, s1.Value, a1,
+			s2, s1, a1,
 		) {
 			t.Errorf("The value of err was unexpected: %v", err)
 		}

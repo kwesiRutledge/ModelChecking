@@ -16,7 +16,7 @@ Description:
 	This type is an object which contains the Transition System's State.
 */
 type TransitionSystemState struct {
-	Value  interface{} // Can be the name of the state (i.e. a string), or a tuple of other TransitionSystem states.
+	Name   string
 	System *TransitionSystem
 }
 
@@ -26,26 +26,7 @@ Description:
 	Checks to see if two states in the transition system have the same value.
 */
 func (stateIn TransitionSystemState) Equals(s2 TransitionSystemState) bool {
-	switch stateIn.Value.(type) {
-	case string:
-		return stateIn.Value == s2.Value
-	case []TransitionSystemState:
-		stateInValueTuple := stateIn.Value.([]TransitionSystemState)
-		s2ValueTuple := s2.Value.([]TransitionSystemState)
-
-		for stateTupleIndex, tuple1State := range stateInValueTuple {
-			if !tuple1State.Equals(s2ValueTuple[stateTupleIndex]) {
-				return false
-			}
-		}
-		// If all elements of the tuple are equal,
-		// then return true.
-		return true
-	default:
-		fmt.Println("Equals() was acalled with an unexpected type!")
-		return false
-	}
-
+	return stateIn.Name == s2.Name
 }
 
 /*
@@ -317,22 +298,5 @@ Description:
 	Otherwise, this returns the value of each part of the Value
 */
 func (stateIn TransitionSystemState) String() string {
-	tempVal := ""
-
-	switch stateIn.Value.(type) {
-	case string:
-		tempVal = stateIn.Value.(string)
-	case []TransitionSystemState:
-		stateSlice := stateIn.Value.([]TransitionSystemState)
-		if len(stateSlice) > 1 {
-			tempVal = stateSlice[0].String()
-			for _, tempState := range stateSlice[1:] {
-				tempVal = fmt.Sprintf("%v x %v", tempVal, tempState.String())
-			}
-		}
-	default:
-		//Do nothing
-	}
-
-	return tempVal
+	return stateIn.Name
 }

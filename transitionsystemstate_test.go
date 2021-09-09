@@ -1,6 +1,7 @@
 package modelchecking
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -154,7 +155,7 @@ func TestTransitionSystemState_Pre1(t *testing.T) {
 	}
 
 	if !predecessors[0].Equals(state3) {
-		t.Errorf("Expected for the predecessor to be state3 but received the state%v.", predecessors[0].Value)
+		t.Errorf("Expected for the predecessor to be state3 but received the state%v.", predecessors[0])
 	}
 
 }
@@ -304,12 +305,12 @@ func TestTransitionSystemState_Equals1(t *testing.T) {
 	s1 := ts1.S[1]
 
 	prodState0 := TransitionSystemState{
-		Value:  []TransitionSystemState{s0, s1},
+		Name:   fmt.Sprintf("(%v,%v)", s0, s1),
 		System: &ts1,
 	}
 
 	prodState1 := TransitionSystemState{
-		Value:  []TransitionSystemState{s0, s1},
+		Name:   fmt.Sprintf("(%v,%v)", s0, s1),
 		System: &ts1,
 	}
 
@@ -333,12 +334,12 @@ func TestTransitionSystemState_Equals2(t *testing.T) {
 	s1 := ts1.S[1]
 
 	prodState0 := TransitionSystemState{
-		Value:  []TransitionSystemState{s0, s1},
+		Name:   fmt.Sprintf("(%v,%v)", s0, s1),
 		System: &ts1,
 	}
 
 	prodState1 := TransitionSystemState{
-		Value:  []TransitionSystemState{s1, s1},
+		Name:   fmt.Sprintf("(%v,%v)", s1, s1),
 		System: &ts1,
 	}
 
@@ -379,11 +380,11 @@ func TestTransitionSystemState_String2(t *testing.T) {
 	s1 := ts1.S[1]
 
 	s2 := TransitionSystemState{
-		Value: []TransitionSystemState{s0, s1},
+		Name: fmt.Sprintf("(%v,%v)", s0, s1),
 	}
 
 	// Verify that the first state's string is "pay"
-	if s2.String() != "pay x select" {
+	if s2.String() != "(pay,select)" {
 		t.Errorf("The String() evaluation of s0 is \"%v\". Expected  \"pay x select\".", s2)
 	}
 }

@@ -245,8 +245,8 @@ func TestUtilities_AppendIfUnique2(t *testing.T) {
 /*
 TestUtilities_AppendIfUnique3
 Description:
-	Verifies that the Append function works properly for a single string to AppendIfUnique.
-	The extra string IS NOT COMPLETELY part of the original list.
+	Verifies that the Append function works properly for a string slice to AppendIfUnique.
+	The string slice IS NOT COMPLETELY part of the original list.
 */
 func TestUtilities_AppendIfUnique3(t *testing.T) {
 	// Create a simple slice of strings
@@ -268,8 +268,8 @@ func TestUtilities_AppendIfUnique3(t *testing.T) {
 /*
 TestUtilities_AppendIfUnique4
 Description:
-	Verifies that the Append function works properly for a single string to AppendIfUnique.
-	The extra string IS COMPLETELY part of the original list.
+	Verifies that the Append function works properly for a string slice to AppendIfUnique.
+	The string slice IS COMPLETELY part of the original list.
 */
 func TestUtilities_AppendIfUnique4(t *testing.T) {
 	// Create a simple slice of strings
@@ -285,5 +285,70 @@ func TestUtilities_AppendIfUnique4(t *testing.T) {
 
 	if slice3[len(slice3)-1] != "C" {
 		t.Errorf("The new slice should have final element \"%v\", but was \"%v\".", "C", slice3[len(slice3)-1])
+	}
+}
+
+/*
+TestUtilities_AppendIfUnique5
+Description:
+	Verifies that the Append function works properly for a single string to AppendIfUnique.
+	The string slice IS COMPLETELY part of the original list.
+*/
+func TestUtilities_AppendIfUnique5(t *testing.T) {
+	// Create a simple slice of strings
+	slice1 := []string{}
+	slice2 := []string{"B", "A"}
+
+	// Append string.
+	slice3 := AppendIfUnique(slice1, slice2...)
+
+	if len(slice3) != 2 {
+		t.Errorf("The new slice was expected to have length %v, but was %v instead.", 2, len(slice3))
+	}
+
+	if slice3[len(slice3)-1] != slice2[len(slice2)-1] {
+		t.Errorf("The new slice should have final element \"%v\", but was \"%v\".", slice2[len(slice2)-1], slice3[len(slice3)-1])
+	}
+}
+
+/*
+TestUtilities_FindInSlice1
+Description:
+	Verifies that FindInSlice() works for a given slice of strings.
+*/
+func TestUtilities_FindInSlice1(t *testing.T) {
+	//Create a simple slice.
+	slice1 := []string{"A", "B", "C", "E"}
+	target1 := "E"
+
+	foundIndex, tf := FindInSlice(target1, slice1)
+
+	if !tf {
+		t.Errorf("The function FindInSlice() could not find the target even though it exists in slice1!")
+	}
+
+	if foundIndex != 3 {
+		t.Errorf("Expected that the foundIndex would be 3, but received %v.", foundIndex)
+	}
+}
+
+/*
+TestUtilities_FindInSlice2
+Description:
+	Verifies that FindInSlice() works for a given slice of strings. The target string is NOT in the slice.
+*/
+func TestUtilities_FindInSlice2(t *testing.T) {
+	//Create a simple slice.
+	slice1 := []string{"A", "B", "C", "E"}
+	target1 := "D"
+
+	foundIndex, tf := FindInSlice(target1, slice1)
+
+	if tf {
+		t.Errorf("The function FindInSlice() found the target even though it DOES NOT exist in slice1!")
+	}
+
+	if foundIndex != -1 {
+		t.Errorf("Expected that the foundIndex would be -1, but received %v.", foundIndex)
 	}
 }

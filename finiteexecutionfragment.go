@@ -35,7 +35,7 @@ func (fe FiniteExecutionFragment) Check() error {
 		if !sip1.In(system.Transition[si][ai]) {
 			return fmt.Errorf(
 				"There is an invalid transition between state %v and state %v with action %v. (i.e. %v not in Transition[%v][%v]).",
-				si.Value, sip1.Value, ai, sip1.Value, si.Value, ai,
+				si, sip1, ai, sip1, si, ai,
 			)
 
 		}

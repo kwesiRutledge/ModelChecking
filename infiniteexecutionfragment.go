@@ -40,7 +40,7 @@ func (ief InfiniteExecutionFragment) Check() error {
 		if !sip1.In(system.Transition[si][ai]) {
 			return fmt.Errorf(
 				"There is an invalid transition in UniquePrefix between state %v and state %v with action %v. (i.e. %v not in Transition[%v][%v]).",
-				si.Value, sip1.Value, ai, sip1.Value, si.Value, ai,
+				si, sip1, ai, sip1, si, ai,
 			)
 
 		}
@@ -51,7 +51,7 @@ func (ief InfiniteExecutionFragment) Check() error {
 	if !suffix.s[0].In(system.Transition[prefixFinalState][prefixFinalAction]) {
 		return fmt.Errorf(
 			"The transition from the prefix to the suffix was invalid! (i.e. %v not in Transition[%v][%v]).",
-			suffix.s[0].Value, prefixFinalState.Value, prefixFinalAction,
+			suffix.s[0], prefixFinalState, prefixFinalAction,
 		)
 	}
 
@@ -64,7 +64,7 @@ func (ief InfiniteExecutionFragment) Check() error {
 		if !sip1.In(system.Transition[si][ai]) {
 			return fmt.Errorf(
 				"There is an invalid transition in RepeatingSuffix between state %v and state %v with action %v. (i.e. %v not in Transition[%v][%v]).",
-				si.Value, sip1.Value, ai, sip1.Value, si.Value, ai,
+				si, sip1, ai, sip1, si, ai,
 			)
 
 		}
@@ -75,7 +75,7 @@ func (ief InfiniteExecutionFragment) Check() error {
 	if !suffix.s[0].In(system.Transition[suffixFinalState][suffixFinalAction]) {
 		return fmt.Errorf(
 			"The transition from the suffix end to the suffix beginning was invalid! (i.e. %v not in Transition[%v][%v]).",
-			suffix.s[0].Value, suffixFinalState.Value, suffixFinalAction,
+			suffix.s[0], suffixFinalState, suffixFinalAction,
 		)
 	}
 

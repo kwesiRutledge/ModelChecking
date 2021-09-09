@@ -33,8 +33,8 @@ func TestTransitionSystem_GetState2(t *testing.T) {
 
 	// Try to get a state which is outside of the allowable range.
 	tempState := ts0.S[1]
-	if tempState.Value != "2" {
-		t.Errorf("The value of the correct state (2) was not saved in the state.")
+	if tempState.Name != "2" {
+		t.Errorf("The name of the correct state (2) was not saved in the state.")
 	}
 }
 
@@ -451,6 +451,12 @@ func TestTransitionSystem_Check1(t *testing.T) {
 
 }
 
+/*
+TestTransitionSystem_Interleave1
+Description:
+	Verifies that the interleave operation correctly creates the desired number of states in the transition system with
+	two systems that have a known number of states in each.
+*/
 func TestTransitionSystem_Interleave1(t *testing.T) {
 	// Constants
 	ts0 := GetBeverageVendingMachineTS()
@@ -464,5 +470,26 @@ func TestTransitionSystem_Interleave1(t *testing.T) {
 
 	if len(ts2.S) == 9 {
 		t.Errorf("Expected for there to be 9 states in the interleaved transition system, but found %v.", len(ts2.S))
+	}
+}
+
+/*
+TestTransitionSystem_Interleave2
+Description:
+	Verifies that the number of actions are correct in the resulting transition system that comes from a cartesian product.
+*/
+func TestTransitionSystem_Interleave2(t *testing.T) {
+	// Constants
+	ts0 := GetBeverageVendingMachineTS()
+	ts1 := GetSimpleTS1()
+
+	// Algorithm
+	ts2, err := ts0.Interleave(ts1)
+	if err != nil {
+		t.Errorf("Error using Interleave: %v", err)
+	}
+
+	if len(ts2.Act) != (len(ts0.Act) + len(ts1.Act)) {
+		t.Errorf("Expected for there to be %v actions in the interleaved transition system, but found %v.", (len(ts0.Act) + len(ts1.Act)), len(ts2.Act))
 	}
 }
