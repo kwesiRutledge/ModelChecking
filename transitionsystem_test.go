@@ -493,3 +493,48 @@ func TestTransitionSystem_Interleave2(t *testing.T) {
 		t.Errorf("Expected for there to be %v actions in the interleaved transition system, but found %v.", (len(ts0.Act) + len(ts1.Act)), len(ts2.Act))
 	}
 }
+
+/*
+TestTransitionSystem_Interleave3
+Description:
+	Verifies that the number of initial states are correct for this interleaving.
+*/
+func TestTransitionSystem_Interleave3(t *testing.T) {
+	// Constants
+	ts0 := GetBeverageVendingMachineTS()
+	ts1 := GetSimpleTS1()
+
+	// Algorithm
+	ts2, err := ts0.Interleave(ts1)
+	if err != nil {
+		t.Errorf("Error using Interleave: %v", err)
+	}
+
+	if len(ts2.I) != 1 {
+		t.Errorf("Expected for there to be 1 initial state in the interleaved transition system, but found %v.", len(ts2.I))
+	}
+}
+
+/*
+TestTransitionSystem_Interleave4
+Description:
+	Verifies that the number of atomic propositions labeled to a non-initial product state
+	is correct.
+*/
+func TestTransitionSystem_Interleave4(t *testing.T) {
+	// Constants
+	ts0 := GetBeverageVendingMachineTS()
+	ts1 := GetSimpleTS1()
+
+	// Algorithm
+	ts2, err := ts0.Interleave(ts1)
+	if err != nil {
+		t.Errorf("Error using Interleave: %v", err)
+	}
+
+	productState2 := ts2.S[1]
+
+	if len(ts2.L[productState2]) == 3 {
+		t.Errorf("Expected for there to be 3 labels associated with the second state but there were nitial state in the interleaved transition system, but found %v.", len(ts2.L[productState2]))
+	}
+}

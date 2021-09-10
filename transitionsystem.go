@@ -311,5 +311,40 @@ func (ts TransitionSystem) Interleave(ts2 TransitionSystem) (TransitionSystem, e
 	}
 	interleavedTS.Transition = Transition
 
+	// Initial States
+	var I []TransitionSystemState
+	for _, iState1 := range ts.I {
+		for _, iState2 := range ts2.I {
+			I = append(I,
+				TransitionSystemState{
+					Name:   fmt.Sprintf("(%v,%v)", iState1, iState2),
+					System: &interleavedTS,
+				})
+		}
+	}
+	interleavedTS.I = I
+
+	// AP
+	var AP []AtomicProposition
+	AP = append(AP, ts.AP...)
+	AP = append(AP, ts2.AP...)
+	interleavedTS.AP = AP
+
+	// Label Map
+	L := make(map[TransitionSystemState][]AtomicProposition)
+	for _, s1 := range ts.S {
+		for _, s2 := range ts2.S {
+			// Create product state.
+			tempProductState := TransitionSystemState{
+				Name:   fmt.Sprintf("(%v,%v)", s1, s2),
+				System: &interleavedTS,
+			}
+
+			// Create label
+			L[tempProductState] = append(ts.L[s1], ts2.L[s2]...)
+		}
+	}
+	interleavedTS.L = L
+
 	return interleavedTS, nil
 }
