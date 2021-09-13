@@ -73,7 +73,7 @@ Description:
 */
 func TestFiniteExecutionFragment_Check3(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	s2 := ts0.S[1]
@@ -82,7 +82,7 @@ func TestFiniteExecutionFragment_Check3(t *testing.T) {
 
 	// Execution
 	e0 := FiniteExecutionFragment{
-		s: []TransitionSystemState{s1, s1, s2},
+		s: []mc.TransitionSystemState{s1, s1, s2},
 		a: []string{a1, a1},
 	}
 
@@ -106,7 +106,7 @@ Description:
 */
 func TestFiniteExecutionFragment_Check4(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	a1 := ts0.Act[0]
@@ -114,7 +114,7 @@ func TestFiniteExecutionFragment_Check4(t *testing.T) {
 
 	// Execution
 	e0 := FiniteExecutionFragment{
-		s: []TransitionSystemState{s1, s1},
+		s: []mc.TransitionSystemState{s1, s1},
 		a: []string{a1},
 	}
 
@@ -134,7 +134,7 @@ Description:
 */
 func TestFiniteExecutionFragment_Check5(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	s2 := ts0.S[1]
@@ -145,7 +145,7 @@ func TestFiniteExecutionFragment_Check5(t *testing.T) {
 
 	// Execution
 	e0 := FiniteExecutionFragment{
-		s: []TransitionSystemState{s1, s2, s2, s3},
+		s: []mc.TransitionSystemState{s1, s2, s2, s3},
 		a: []string{a2, a1, a2},
 	}
 
@@ -165,7 +165,7 @@ Description:
 */
 func TestFiniteExectutionFragment_IsMaximal1(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS2()
+	ts0 := mc.GetSimpleTS2()
 
 	s1 := ts0.S[0]
 	s2 := ts0.S[1]
@@ -177,7 +177,7 @@ func TestFiniteExectutionFragment_IsMaximal1(t *testing.T) {
 
 	// Execution
 	e0 := FiniteExecutionFragment{
-		s: []TransitionSystemState{s1, s2, s2, s3, s4},
+		s: []mc.TransitionSystemState{s1, s2, s2, s3, s4},
 		a: []string{a2, a1, a2, a2},
 	}
 
@@ -200,7 +200,7 @@ Description:
 */
 func TestFiniteExectutionFragment_IsMaximal2(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	s2 := ts0.S[1]
@@ -211,7 +211,7 @@ func TestFiniteExectutionFragment_IsMaximal2(t *testing.T) {
 
 	// Execution
 	e0 := FiniteExecutionFragment{
-		s: []TransitionSystemState{s1, s2, s2, s3},
+		s: []mc.TransitionSystemState{s1, s2, s2, s3},
 		a: []string{a2, a1, a2},
 	}
 
@@ -234,7 +234,7 @@ Description:
 */
 func TestFiniteExectutionFragment_IsInitial1(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s2 := ts0.S[1]
 	s3 := ts0.S[2]
@@ -244,7 +244,7 @@ func TestFiniteExectutionFragment_IsInitial1(t *testing.T) {
 
 	// Execution
 	e0 := FiniteExecutionFragment{
-		s: []TransitionSystemState{s2, s2, s3},
+		s: []mc.TransitionSystemState{s2, s2, s3},
 		a: []string{a1, a2},
 	}
 
@@ -267,7 +267,7 @@ Description:
 */
 func TestFiniteExectutionFragment_IsInitial2(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	s2 := ts0.S[1]
@@ -278,7 +278,7 @@ func TestFiniteExectutionFragment_IsInitial2(t *testing.T) {
 
 	// Execution
 	e0 := FiniteExecutionFragment{
-		s: []TransitionSystemState{s1, s2, s2, s3},
+		s: []mc.TransitionSystemState{s1, s2, s2, s3},
 		a: []string{a2, a1, a2},
 	}
 

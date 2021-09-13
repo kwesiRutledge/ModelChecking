@@ -75,85 +75,6 @@ func TestTransitionSystem_GetTransitionSystem1(t *testing.T) {
 }
 
 /*
-GetSimpleTS
-Description:
-	Get a transition system to test satisfies.
-*/
-func GetSimpleTS1() TransitionSystem {
-	ts0, _ := GetTransitionSystem(
-		[]string{"1", "2", "3"}, []string{"1", "2"},
-		map[string]map[string][]string{
-			"1": map[string][]string{
-				"1": []string{"1"},
-				"2": []string{"2"},
-			},
-			"2": map[string][]string{
-				"1": []string{"1", "2"},
-				"2": []string{"2", "3"},
-			},
-			"3": map[string][]string{
-				"1": []string{"3"},
-				"2": []string{"2"},
-			},
-		},
-		[]string{"1"},
-		[]string{"A", "B", "C", "D"},
-		map[string][]string{
-			"1": []string{"A"},
-			"2": []string{"B", "D"},
-			"3": []string{"C", "D"},
-		},
-	)
-
-	return ts0
-}
-
-/*
-GetSimpleTS2
-Description:
-	Get a transition system to test Pre and Post.
-	It should have states that generates empty sets for Pre() and Post() respectively.
-*/
-func GetSimpleTS2() TransitionSystem {
-	ts0, _ := GetTransitionSystem(
-		[]string{"1", "2", "3", "4", "5"}, []string{"1", "2"},
-		map[string]map[string][]string{
-			"1": map[string][]string{
-				"1": []string{"1"},
-				"2": []string{"2"},
-			},
-			"2": map[string][]string{
-				"1": []string{"1", "2", "4"},
-				"2": []string{"2", "3"},
-			},
-			"3": map[string][]string{
-				"1": []string{"3"},
-				"2": []string{"2", "4"},
-			},
-			"4": map[string][]string{
-				"1": []string{},
-				"2": []string{},
-			},
-			"5": map[string][]string{
-				"1": []string{"4"},
-				"2": []string{"1", "2", "3"},
-			},
-		},
-		[]string{"1"},
-		[]string{"A", "B", "C", "D"},
-		map[string][]string{
-			"1": []string{"A"},
-			"2": []string{"B", "D"},
-			"3": []string{"C", "D"},
-			"4": []string{"A", "C"},
-			"5": []string{"A", "B", "C", "D"},
-		},
-	)
-
-	return ts0
-}
-
-/*
 TestTransitionSystem_IsActionDeterministic1
 Description:
 	Testing that the function correctly recognizes that a transition system IS NOT action deterministic.
@@ -164,51 +85,6 @@ func TestTransitionSystem_IsActionDeterministic1(t *testing.T) {
 	if ts1.IsActionDeterministic() {
 		t.Errorf("Test is given a transition system that is not action deterministic, but function claims that it is!")
 	}
-}
-
-/*
-GetSimpleTS3
-Description:
-	Get a transition system to test Pre and Post.
-	It should have states that generates empty sets for Pre() and Post() respectively.
-*/
-func TransitionSystem_GetSimpleTS3() TransitionSystem {
-	ts0, _ := GetTransitionSystem(
-		[]string{"1", "2", "3", "4", "5"}, []string{"1", "2"},
-		map[string]map[string][]string{
-			"1": map[string][]string{
-				"1": []string{"1"},
-				"2": []string{"2"},
-			},
-			"2": map[string][]string{
-				"1": []string{"1"},
-				"2": []string{"3"},
-			},
-			"3": map[string][]string{
-				"1": []string{"3"},
-				"2": []string{"4"},
-			},
-			"4": map[string][]string{
-				"1": []string{},
-				"2": []string{},
-			},
-			"5": map[string][]string{
-				"1": []string{"4"},
-				"2": []string{},
-			},
-		},
-		[]string{"1"},
-		[]string{"A", "B", "C", "D"},
-		map[string][]string{
-			"1": []string{"A"},
-			"2": []string{"B", "D"},
-			"3": []string{"C", "D"},
-			"4": []string{"A", "C"},
-			"5": []string{"A", "B", "C", "D"},
-		},
-	)
-
-	return ts0
 }
 
 /*
@@ -248,51 +124,6 @@ func TestTransitionSystem_IsAPDeterministic2(t *testing.T) {
 	if !ts1.IsAPDeterministic() {
 		t.Errorf("Test is given a transition system that is AP-deterministic, but function claims that it is not!")
 	}
-}
-
-/*
-TransitionSystem_GetSimpleTS4
-Description:
-	Get a transition system to test Pre and Post.
-	It should have states that generates empty sets for Pre() and Post() respectively.
-*/
-func TransitionSystem_GetSimpleTS4() TransitionSystem {
-	ts0, _ := GetTransitionSystem(
-		[]string{"1", "2", "3", "4", "5"}, []string{"1", "2"},
-		map[string]map[string][]string{
-			"1": map[string][]string{
-				"1": []string{"1"},
-				"2": []string{"2"},
-			},
-			"2": map[string][]string{
-				"1": []string{"1", "2"},
-				"2": []string{"2", "3"},
-			},
-			"3": map[string][]string{
-				"1": []string{"3"},
-				"2": []string{"4"},
-			},
-			"4": map[string][]string{
-				"1": []string{},
-				"2": []string{},
-			},
-			"5": map[string][]string{
-				"1": []string{"4"},
-				"2": []string{},
-			},
-		},
-		[]string{"1"},
-		[]string{"A", "B", "C", "D"},
-		map[string][]string{
-			"1": []string{"A"},
-			"2": []string{"B", "D"},
-			"3": []string{"B", "D"},
-			"4": []string{"A", "C"},
-			"5": []string{"A", "B", "C", "D"},
-		},
-	)
-
-	return ts0
 }
 
 /*

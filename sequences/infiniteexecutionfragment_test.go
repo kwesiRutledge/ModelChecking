@@ -9,18 +9,20 @@ package sequences
 import (
 	"fmt"
 	"testing"
+
+	mc "github.com/kwesiRutledge/ModelChecking"
 )
 
 func TestInfiniteExecutionFragment_Check1(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	a1 := ts0.Act[0]
 
 	// Execution
 	fef0 := FiniteExecutionFragment{
-		s: []TransitionSystemState{s1, s1},
+		s: []mc.TransitionSystemState{s1, s1},
 		a: []string{a1},
 	}
 
@@ -48,7 +50,7 @@ Description:
 */
 func TestInfiniteExecutionFragment_Check2(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	a1 := ts0.Act[0]
@@ -57,11 +59,11 @@ func TestInfiniteExecutionFragment_Check2(t *testing.T) {
 
 	ief0 := InfiniteExecutionFragment{
 		UniquePrefix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s1, s1},
+			s: []mc.TransitionSystemState{s1, s1},
 			a: []string{a1, a1},
 		},
 		RepeatingSuffix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s1, s1},
+			s: []mc.TransitionSystemState{s1, s1},
 			a: []string{a1},
 		},
 	}
@@ -85,7 +87,7 @@ Description:
 */
 func TestInfiniteExecutionFragment_Check3(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	s2 := ts0.S[1]
@@ -95,11 +97,11 @@ func TestInfiniteExecutionFragment_Check3(t *testing.T) {
 
 	ief0 := InfiniteExecutionFragment{
 		UniquePrefix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s1, s2},
+			s: []mc.TransitionSystemState{s1, s2},
 			a: []string{a1, a1},
 		},
 		RepeatingSuffix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s1, s1},
+			s: []mc.TransitionSystemState{s1, s1},
 			a: []string{a1, a1},
 		},
 	}
@@ -127,7 +129,7 @@ Description:
 */
 func TestInfiniteExecutionFragment_Check4(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	// s2 := ts0.S[1]
@@ -138,11 +140,11 @@ func TestInfiniteExecutionFragment_Check4(t *testing.T) {
 
 	ief0 := InfiniteExecutionFragment{
 		UniquePrefix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s1, s1},
+			s: []mc.TransitionSystemState{s1, s1},
 			a: []string{a1, a2},
 		},
 		RepeatingSuffix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s1, s1},
+			s: []mc.TransitionSystemState{s1, s1},
 			a: []string{a1, a1},
 		},
 	}
@@ -170,7 +172,7 @@ Description:
 */
 func TestInfiniteExecutionFragment_Check5(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	s2 := ts0.S[1]
@@ -181,11 +183,11 @@ func TestInfiniteExecutionFragment_Check5(t *testing.T) {
 
 	ief0 := InfiniteExecutionFragment{
 		UniquePrefix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s1, s1},
+			s: []mc.TransitionSystemState{s1, s1},
 			a: []string{a1, a2},
 		},
 		RepeatingSuffix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s2, s1},
+			s: []mc.TransitionSystemState{s2, s1},
 			a: []string{a2, a1},
 		},
 	}
@@ -213,7 +215,7 @@ Description:
 */
 func TestInfiniteExecutionFragment_Check6(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	s2 := ts0.S[1]
@@ -224,11 +226,11 @@ func TestInfiniteExecutionFragment_Check6(t *testing.T) {
 
 	ief0 := InfiniteExecutionFragment{
 		UniquePrefix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s1, s1},
+			s: []mc.TransitionSystemState{s1, s1},
 			a: []string{a1, a2},
 		},
 		RepeatingSuffix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s2, s1},
+			s: []mc.TransitionSystemState{s2, s1},
 			a: []string{a1, a1},
 		},
 	}
@@ -255,7 +257,7 @@ Description:
 */
 func TestInfiniteExecutionFragment_Check7(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	s2 := ts0.S[1]
@@ -266,11 +268,11 @@ func TestInfiniteExecutionFragment_Check7(t *testing.T) {
 
 	ief0 := InfiniteExecutionFragment{
 		UniquePrefix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s1, s1},
+			s: []mc.TransitionSystemState{s1, s1},
 			a: []string{a1, a2},
 		},
 		RepeatingSuffix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s2, s1},
+			s: []mc.TransitionSystemState{s2, s1},
 			a: []string{a1, a2},
 		},
 	}
@@ -291,7 +293,7 @@ Description:
 */
 func TestInfiniteExecutionFragment_IsMaximal1(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	s2 := ts0.S[1]
@@ -302,11 +304,11 @@ func TestInfiniteExecutionFragment_IsMaximal1(t *testing.T) {
 
 	ief0 := InfiniteExecutionFragment{
 		UniquePrefix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s1, s1},
+			s: []mc.TransitionSystemState{s1, s1},
 			a: []string{a1, a2},
 		},
 		RepeatingSuffix: FiniteExecutionFragment{
-			s: []TransitionSystemState{s2, s1},
+			s: []mc.TransitionSystemState{s2, s1},
 			a: []string{a1, a2},
 		},
 	}

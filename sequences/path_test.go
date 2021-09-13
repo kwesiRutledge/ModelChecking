@@ -8,6 +8,8 @@ package sequences
 import (
 	"strings"
 	"testing"
+
+	mc "github.com/kwesiRutledge/ModelChecking"
 )
 
 /*
@@ -17,10 +19,10 @@ Description:
 */
 func TestPath_Check1(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[0]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[0]},
 	}
 
 	// Test Fragment
@@ -36,10 +38,10 @@ Description:
 */
 func TestPath_Check2(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
 	}
 
 	// Test Fragment
@@ -55,14 +57,14 @@ Description:
 */
 func TestPath_Check3(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
 	}
 
 	fpf1 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
 	}
 
 	ipf0 := InfinitePathFragment{
@@ -83,14 +85,14 @@ Description:
 */
 func TestPath_Check4(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[1]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[1]},
 	}
 
 	fpf1 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
 	}
 
 	ipf0 := InfinitePathFragment{
@@ -112,14 +114,14 @@ Description:
 */
 func TestPath_Check5(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
 	}
 
 	fpf1 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[0]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[0]},
 	}
 
 	ipf0 := InfinitePathFragment{
@@ -142,14 +144,14 @@ Description:
 */
 func TestPath_Check6(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
 	}
 
 	fpf1 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[1], ts0.S[3], ts0.S[0]},
+		s: []mc.TransitionSystemState{ts0.S[1], ts0.S[3], ts0.S[0]},
 	}
 
 	ipf0 := InfinitePathFragment{
@@ -172,14 +174,14 @@ Description:
 */
 func TestPath_Check7(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
 	}
 
 	fpf1 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3], ts0.S[0]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3], ts0.S[0]},
 	}
 
 	ipf0 := InfinitePathFragment{
@@ -201,10 +203,10 @@ Description:
 */
 func TestPath_IsMaximal1(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
 	}
 
 	// Test
@@ -220,10 +222,10 @@ Description:
 */
 func TestPath_IsMaximal2(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := TransitionSystem_GetSimpleTS3()
+	ts0 := mc.TransitionSystem_GetSimpleTS3()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2], ts0.S[3]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2], ts0.S[3]},
 	}
 
 	// Test
@@ -243,14 +245,14 @@ Description:
 */
 func TestPath_IsMaximal3(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
 	}
 
 	fpf1 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
 	}
 
 	ipf0 := InfinitePathFragment{
@@ -276,10 +278,10 @@ Description:
 */
 func TestPath_IsInitial1(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
 	}
 
 	// Test
@@ -295,10 +297,10 @@ Description:
 */
 func TestPath_IsInitial2(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[1], ts0.S[2], ts0.S[0]},
+		s: []mc.TransitionSystemState{ts0.S[1], ts0.S[2], ts0.S[0]},
 	}
 
 	// Test
@@ -314,14 +316,14 @@ Description:
 */
 func TestPath_IsInitial3(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
 	}
 
 	fpf1 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
 	}
 
 	ipf0 := InfinitePathFragment{
@@ -347,14 +349,14 @@ Description:
 */
 func TestPath_IsInitial4(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[1], ts0.S[2]},
 	}
 
 	fpf1 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
 	}
 
 	ipf0 := InfinitePathFragment{
@@ -381,10 +383,10 @@ Description:
 */
 func TestPath_IsPath1(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
 	}
 
 	// Test
@@ -401,14 +403,14 @@ Description:
 */
 func TestPath_IsPath2(t *testing.T) {
 	// Create an example FinitePathFragment object
-	ts0 := GetBeverageVendingMachineTS()
+	ts0 := mc.GetBeverageVendingMachineTS()
 
 	fpf0 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
 	}
 
 	fpf1 := FinitePathFragment{
-		s: []TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
 	}
 
 	ipf0 := InfinitePathFragment{
