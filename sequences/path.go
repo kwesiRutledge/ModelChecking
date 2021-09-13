@@ -4,10 +4,12 @@ path.go
 Description:
 	Objects which are finite path fragments.
 */
-package modelchecking
+package sequences
 
 import (
 	"fmt"
+
+	mc "github.com/kwesiRutledge/ModelChecking"
 )
 
 /*
@@ -15,7 +17,7 @@ Type Declarations
 */
 
 type FinitePathFragment struct {
-	s []TransitionSystemState
+	s []mc.TransitionSystemState
 }
 
 type InfinitePathFragment struct {
@@ -37,7 +39,7 @@ func (fragmentIn FinitePathFragment) Check() error {
 		si := fragmentIn.s[sIndex]
 		sip1 := fragmentIn.s[sIndex+1]
 
-		siAncestors, err := Post(si)
+		siAncestors, err := mc.Post(si)
 		if err != nil {
 			return fmt.Errorf("There was an issue computing the %vth post (Post(%v)): %v", sIndex, si, err)
 		}
@@ -82,7 +84,7 @@ func (fragmentIn InfinitePathFragment) Check() error {
 	//Check that the first state in the suffix is in the Post of the last state from the prefix
 	lastStateInPrefix := fragmentIn.UniquePrefix.s[len(fragmentIn.UniquePrefix.s)-1]
 	firstStateInSuffix := fragmentIn.RepeatingSuffix.s[0]
-	ancestorsOfLastState, err := Post(lastStateInPrefix)
+	ancestorsOfLastState, err := mc.Post(lastStateInPrefix)
 	if err != nil {
 		return fmt.Errorf("There was an error computing the Post of the last state in the prefix: %v", err)
 	}
@@ -93,7 +95,7 @@ func (fragmentIn InfinitePathFragment) Check() error {
 
 	//Check that the first state in the suffix is in the Post of the last state in the suffix
 	lastStateInSuffix := fragmentIn.RepeatingSuffix.s[len(fragmentIn.RepeatingSuffix.s)-1]
-	ancestorsOfLastState, err = Post(lastStateInSuffix)
+	ancestorsOfLastState, err = mc.Post(lastStateInSuffix)
 	if err != nil {
 		return fmt.Errorf("There was an error computing the Post of the last state in the suffix: %v", err)
 	}
@@ -144,7 +146,7 @@ func (fragmentIn FinitePathFragment) IsInitial() bool {
 }
 
 func (fragmentIn InfinitePathFragment) IsInitial() bool {
-	var initialState TransitionSystemState
+	var initialState mc.TransitionSystemState
 	if len(fragmentIn.UniquePrefix.s) > 0 {
 		initialState = fragmentIn.UniquePrefix.s[0]
 	} else {

@@ -4,7 +4,7 @@ Description:
 	Implementation of functions for the Finite Execution Fragment object which is described in Principles of Model Checking.
 */
 
-package modelchecking
+package sequences
 
 import "fmt"
 

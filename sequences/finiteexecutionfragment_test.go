@@ -4,23 +4,25 @@ Description:
 	Implementation of functions for the Finite Execution Fragment object which is described in Principles of Model Checking.
 */
 
-package modelchecking
+package sequences
 
 import (
 	"fmt"
 	"testing"
+
+	mc "github.com/kwesiRutledge/ModelChecking"
 )
 
 func TestFiniteExecutionFragment_Check1(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	a1 := ts0.Act[0]
 
 	// Execution
 	e0 := FiniteExecutionFragment{
-		s: []TransitionSystemState{s1, s1},
+		s: []mc.TransitionSystemState{s1, s1},
 		a: []string{a1, a1},
 	}
 
@@ -39,7 +41,7 @@ Description:
 */
 func TestFiniteExecutionFragment_Check2(t *testing.T) {
 	// Create Simple Transition System
-	ts0 := GetSimpleTS1()
+	ts0 := mc.GetSimpleTS1()
 
 	s1 := ts0.S[0]
 	s2 := ts0.S[1]
@@ -48,7 +50,7 @@ func TestFiniteExecutionFragment_Check2(t *testing.T) {
 
 	// Execution
 	e0 := FiniteExecutionFragment{
-		s: []TransitionSystemState{s1, s2},
+		s: []mc.TransitionSystemState{s1, s2},
 		a: []string{a1},
 	}
 

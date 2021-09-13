@@ -3,7 +3,7 @@ path_test.go
 Description:
 	Tests for the objects and functions defined in path.go
 */
-package modelchecking
+package sequences
 
 import (
 	"strings"

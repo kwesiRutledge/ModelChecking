@@ -4,12 +4,16 @@ Description:
 	Implementation of functions for the Finite Execution Fragment object which is described in Principles of Model Checking.
 */
 
-package modelchecking
+package sequences
 
-import "fmt"
+import (
+	"fmt"
+
+	mc "github.com/kwesiRutledge/ModelChecking"
+)
 
 type FiniteExecutionFragment struct {
-	s []TransitionSystemState
+	s []mc.TransitionSystemState
 	a []string
 }
 
