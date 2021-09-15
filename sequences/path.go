@@ -1,4 +1,4 @@
-//package modelchecking
+//package sequences
 /*
 path.go
 Description:
@@ -172,5 +172,30 @@ func IsPath(fragmentIn PathFragment) bool {
 
 /*
 ToTrace
-
+Description:
+	Uses the labels of this transition system to compute the trace
+	of a finite or infinite path.
+Assumptions:
+	This function assumes that you've run fragmentIn.Check() beforehand.
 */
+func (fragmentIn FinitePathFragment) ToTrace() FiniteTrace {
+	// Get System
+	firstState := fragmentIn.s[0]
+	ts := *&firstState.System
+
+	var SequenceOfAPSubsets [][]mc.AtomicProposition
+	for _, tempState := range fragmentIn.s {
+		SequenceOfAPSubsets = append(SequenceOfAPSubsets, ts.L[tempState])
+	}
+
+	// Return final answer.
+	return FiniteTrace{L: SequenceOfAPSubsets}
+
+}
+
+func (fragmentIn InfinitePathFragment) ToTrace() InfiniteTrace {
+	return InfiniteTrace{
+		UniquePrefix:    fragmentIn.UniquePrefix.ToTrace(),
+		RepeatingSuffix: fragmentIn.RepeatingSuffix.ToTrace(),
+	}
+}

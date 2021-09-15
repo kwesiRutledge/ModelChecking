@@ -423,3 +423,58 @@ func TestPath_IsPath2(t *testing.T) {
 		t.Errorf("The InfinitePathFragment is expected to be a path, as it is both initial and maximal, but the function claims it is not.")
 	}
 }
+
+/*
+TestPath_ToTrace1
+Description:
+	Checks to see if ToTrace() can catch an invalid state in the sequence
+	of a FinitePathFragment.
+*/
+func TestPath_ToTrace1(t *testing.T) {
+	// Create an example FinitePathFragment object
+	ts0 := mc.GetBeverageVendingMachineTS()
+
+	fpf0 := FinitePathFragment{
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+	}
+
+	// Test
+	if len(fpf0.ToTrace().L) != len(fpf0.s) {
+		t.Errorf("The length of Trace(fpf0) = %v, but the length of fpf0 = %v.", len(fpf0.ToTrace().L), len(fpf0.s))
+	}
+}
+
+/*
+TestPath_ToTrace2
+Description:
+	Checks to see if an infinitepathfragment is properly transformed into
+	an infinite trace in terms of lengths.
+*/
+func TestPath_ToTrace2(t *testing.T) {
+	// Create an example FinitePathFragment object
+	ts0 := mc.GetBeverageVendingMachineTS()
+
+	fpf0 := FinitePathFragment{
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[2]},
+	}
+
+	fpf1 := FinitePathFragment{
+		s: []mc.TransitionSystemState{ts0.S[0], ts0.S[1], ts0.S[3]},
+	}
+
+	ipf0 := InfinitePathFragment{
+		UniquePrefix:    fpf0,
+		RepeatingSuffix: fpf1,
+	}
+
+	// Test
+	if !IsPath(ipf0) {
+		t.Errorf("The InfinitePathFragment is expected to be a path, as it is both initial and maximal, but the function claims it is not.")
+	}
+
+	infTrace0 := ipf0.ToTrace()
+	if len(ipf0.UniquePrefix.s) != len(infTrace0.UniquePrefix.L) {
+		t.Errorf("The unique prefix of ipf0 has length %v, but the trace of it has unique prefix of length %v.", len(ipf0.UniquePrefix.s), len(infTrace0.UniquePrefix.L))
+	}
+
+}

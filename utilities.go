@@ -109,7 +109,7 @@ func FindInSlice(xIn interface{}, sliceIn interface{}) (int, bool) {
 /*
 GetBeverageVendingMachineTS
 Description:
-
+	Creates the beloved Vending Machine example which is used in a lot of Principles of Model Checking.
 */
 func GetBeverageVendingMachineTS() TransitionSystem {
 
