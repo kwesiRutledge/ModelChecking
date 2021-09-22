@@ -112,3 +112,7 @@ func (ap AtomicProposition) SatisfactionHelper(stateIn TransitionSystemState) (b
 	return ap.In(LOfState), nil
 
 }
+
+func (ap AtomicProposition) String() string {
+	return ap.Name
+}
