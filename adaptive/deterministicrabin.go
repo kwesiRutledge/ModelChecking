@@ -153,6 +153,34 @@ func GetDRA(SNames []string, initialStateName string, alphabetNames []string, tr
 	}
 
 	// Creates the Omega pairs of sets.
+	var Omega [][2][]DRAState
+	for _, subsetPair := range omegaSlice {
+		// Collect Pairs of Subsets
+		var subset1AsDRA []DRAState
+		subset1 := subsetPair[0]
+		for _, subset1EltName := range subset1 {
+			subset1AsDRA = append(subset1AsDRA,
+				DRAState{
+					Name:      subset1EltName,
+					Automaton: &draOut,
+				},
+			)
+		}
+
+		var subset2AsDRA []DRAState
+		subset2 := subsetPair[1]
+		for _, subset2EltName := range subset2 {
+			subset2AsDRA = append(subset2AsDRA,
+				DRAState{
+					Name:      subset2EltName,
+					Automaton: &draOut,
+				},
+			)
+		}
+
+		Omega = append(Omega, [2][]DRAState{subset1AsDRA, subset2AsDRA})
+	}
+	draOut.Omega = Omega
 
 	return draOut, nil
 
