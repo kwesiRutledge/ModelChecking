@@ -368,3 +368,208 @@ func TestDeterministicRabin_CheckAlpha3(t *testing.T) {
 		t.Errorf("The error created by err was not what we expected: %v", err)
 	}
 }
+
+/*
+TestDeterministicRabin_CheckAlpha4
+Description:
+	Verifies that the alpha is correct.
+*/
+func TestDeterministicRabin_CheckAlpha4(t *testing.T) {
+	// Create Constants
+	// Create two Simple DRAState
+	q0 := DRAState{Name: "Quaren"}
+	q1 := DRAState{Name: "Dr. Umar"}
+	q2 := DRAState{Name: "Pegasus"}
+	q3 := DRAState{Name: "Hercules"}
+
+	ap0 := mc.AtomicProposition{Name: "red"}
+	ap1 := mc.AtomicProposition{Name: "blue"}
+
+	var dra0 DeterministicRabinAutomaton
+	dra0.S = []DRAState{q0, q1, q2, q3}
+	dra0.s0 = q3
+	dra0.Alphabet = []mc.AtomicProposition{ap0, ap1}
+	dra0.alpha = map[DRAState]map[mc.AtomicProposition]DRAState{
+		q0: map[mc.AtomicProposition]DRAState{
+			ap0: q0,
+			ap1: q1,
+		},
+		q1: map[mc.AtomicProposition]DRAState{
+			ap0: q1,
+			ap1: q2,
+		},
+		q2: map[mc.AtomicProposition]DRAState{
+			ap0: q2,
+			ap1: q3,
+		},
+		q3: map[mc.AtomicProposition]DRAState{
+			ap0: q3,
+			ap1: q0,
+		},
+	}
+
+	// Algorithm
+	err := dra0.CheckAlpha()
+	if err != nil {
+		t.Errorf("Expected error to be nil but it was %v", err)
+	}
+
+}
+
+/*
+TestDeterministicRabin_CheckOmega1
+Description:
+	Verifies that the Omega pairs are correct
+*/
+func TestDeterministicRabin_CheckOmega1(t *testing.T) {
+	// Create Constants
+	// Create two Simple DRAState
+	q0 := DRAState{Name: "Quaren"}
+	q1 := DRAState{Name: "Dr. Umar"}
+	q2 := DRAState{Name: "Pegasus"}
+	q3 := DRAState{Name: "Hercules"}
+
+	ap0 := mc.AtomicProposition{Name: "red"}
+	ap1 := mc.AtomicProposition{Name: "blue"}
+
+	var dra0 DeterministicRabinAutomaton
+	dra0.S = []DRAState{q0, q1, q2, q3}
+	dra0.s0 = q3
+	dra0.Alphabet = []mc.AtomicProposition{ap0, ap1}
+	dra0.alpha = map[DRAState]map[mc.AtomicProposition]DRAState{
+		q0: map[mc.AtomicProposition]DRAState{
+			ap0: q0,
+			ap1: q1,
+		},
+		q1: map[mc.AtomicProposition]DRAState{
+			ap0: q1,
+			ap1: q2,
+		},
+		q2: map[mc.AtomicProposition]DRAState{
+			ap0: q2,
+			ap1: q3,
+		},
+		q3: map[mc.AtomicProposition]DRAState{
+			ap0: q3,
+			ap1: q0,
+		},
+	}
+	dra0.Omega = [][2][]DRAState{
+		[2][]DRAState{[]DRAState{q0, q1}, []DRAState{q2, q3}},
+		[2][]DRAState{[]DRAState{q0, q1, q2}, []DRAState{q3}},
+		[2][]DRAState{[]DRAState{q0, q1, q2}, []DRAState{q1, q2, q3}},
+	}
+
+	// Algorithm
+	err := dra0.CheckOmega()
+	if err != nil {
+		t.Errorf("Expected error to be nil but it was %v", err)
+	}
+
+}
+
+/*
+TestDeterministicRabin_CheckOmega2
+Description:
+	Verifies that the Omega pairs are not correct (first element in a pair is not a subset)
+*/
+func TestDeterministicRabin_CheckOmega2(t *testing.T) {
+	// Create Constants
+	// Create two Simple DRAState
+	q0 := DRAState{Name: "Quaren"}
+	q1 := DRAState{Name: "Dr. Umar"}
+	q2 := DRAState{Name: "Pegasus"}
+	q3 := DRAState{Name: "Hercules"}
+	q4 := DRAState{Name: "Temptation"}
+
+	ap0 := mc.AtomicProposition{Name: "red"}
+	ap1 := mc.AtomicProposition{Name: "blue"}
+
+	var dra0 DeterministicRabinAutomaton
+	dra0.S = []DRAState{q0, q1, q2, q3}
+	dra0.s0 = q3
+	dra0.Alphabet = []mc.AtomicProposition{ap0, ap1}
+	dra0.alpha = map[DRAState]map[mc.AtomicProposition]DRAState{
+		q0: map[mc.AtomicProposition]DRAState{
+			ap0: q0,
+			ap1: q1,
+		},
+		q1: map[mc.AtomicProposition]DRAState{
+			ap0: q1,
+			ap1: q2,
+		},
+		q2: map[mc.AtomicProposition]DRAState{
+			ap0: q2,
+			ap1: q3,
+		},
+		q3: map[mc.AtomicProposition]DRAState{
+			ap0: q3,
+			ap1: q0,
+		},
+	}
+	dra0.Omega = [][2][]DRAState{
+		[2][]DRAState{[]DRAState{q0, q1}, []DRAState{q2, q3}},
+		[2][]DRAState{[]DRAState{q0, q1, q2}, []DRAState{q3}},
+		[2][]DRAState{[]DRAState{q0, q1, q2, q4}, []DRAState{q1, q2, q3}},
+	}
+
+	// Algorithm
+	err := dra0.CheckOmega()
+	if err.Error() != fmt.Sprintf("The %vth pair's first element is not a subset of the state space.", 2) {
+		t.Errorf("Expected error in the 2th pair's first element, but received: %v", err)
+	}
+
+}
+
+/*
+TestDeterministicRabin_CheckOmega3
+Description:
+	Verifies that the Omega pairs are not correct (second element in a pair is not a subset)
+*/
+func TestDeterministicRabin_CheckOmega3(t *testing.T) {
+	// Create Constants
+	// Create two Simple DRAState
+	q0 := DRAState{Name: "Quaren"}
+	q1 := DRAState{Name: "Dr. Umar"}
+	q2 := DRAState{Name: "Pegasus"}
+	q3 := DRAState{Name: "Hercules"}
+	q4 := DRAState{Name: "Temptation"}
+
+	ap0 := mc.AtomicProposition{Name: "red"}
+	ap1 := mc.AtomicProposition{Name: "blue"}
+
+	var dra0 DeterministicRabinAutomaton
+	dra0.S = []DRAState{q0, q1, q2, q3}
+	dra0.s0 = q3
+	dra0.Alphabet = []mc.AtomicProposition{ap0, ap1}
+	dra0.alpha = map[DRAState]map[mc.AtomicProposition]DRAState{
+		q0: map[mc.AtomicProposition]DRAState{
+			ap0: q0,
+			ap1: q1,
+		},
+		q1: map[mc.AtomicProposition]DRAState{
+			ap0: q1,
+			ap1: q2,
+		},
+		q2: map[mc.AtomicProposition]DRAState{
+			ap0: q2,
+			ap1: q3,
+		},
+		q3: map[mc.AtomicProposition]DRAState{
+			ap0: q3,
+			ap1: q0,
+		},
+	}
+	dra0.Omega = [][2][]DRAState{
+		[2][]DRAState{[]DRAState{q0, q1}, []DRAState{q2, q3}},
+		[2][]DRAState{[]DRAState{q0, q1, q2}, []DRAState{q3, q4}},
+		[2][]DRAState{[]DRAState{q0, q1, q2}, []DRAState{q1, q2, q3}},
+	}
+
+	// Algorithm
+	err := dra0.CheckOmega()
+	if err.Error() != fmt.Sprintf("The %vth pair's second element is not a subset of the state space.", 1) {
+		t.Errorf("Expected error in the 1th pair's second element, but received: %v", err)
+	}
+
+}

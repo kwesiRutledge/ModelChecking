@@ -182,6 +182,11 @@ func GetDRA(SNames []string, initialStateName string, alphabetNames []string, tr
 	}
 	draOut.Omega = Omega
 
+	err = draOut.CheckOmega()
+	if err != nil {
+		return draOut, err
+	}
+
 	return draOut, nil
 
 }
@@ -236,5 +241,43 @@ func (draIn *DeterministicRabinAutomaton) CheckAlpha() error {
 	}
 
 	// Finished checking all transitions
+	return nil
+}
+
+/*
+CheckOmega
+Description:
+	Checks that Omega is a proper collection of subsets of the state space.
+*/
+func (draIn DeterministicRabinAutomaton) CheckOmega() error {
+	// Constants
+	S := draIn.S
+
+	// Algorithm
+	for pairIndex, pairValue := range draIn.Omega {
+
+		elt1 := pairValue[0]
+		tf, err := SliceSubset(elt1, S)
+		if err != nil {
+			return err
+		}
+
+		if !tf {
+			return fmt.Errorf("The %vth pair's first element is not a subset of the state space.", pairIndex)
+		}
+
+		elt2 := pairValue[1]
+		tf, err = SliceSubset(elt2, S)
+		if err != nil {
+			return err
+		}
+
+		if !tf {
+			return fmt.Errorf("The %vth pair's second element is not a subset of the state space.", pairIndex)
+		}
+
+	}
+
+	// If all checks out return no errors
 	return nil
 }
