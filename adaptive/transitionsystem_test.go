@@ -356,3 +356,194 @@ func TestTransitionSystem_UnionOfStates3(t *testing.T) {
 	}
 
 }
+
+/*
+TestTransitionSystem_HasStateSpacePartition1
+Description:
+	Verifies that the HasStateSpacePartition() function eliminates partitions containing the empty set.
+*/
+func TestTransitionSystem_HasStateSpacePartition1(t *testing.T) {
+	// Constants
+
+	ts0 := GetBeverageVendingMachineTS()
+
+	Q := [][]TransitionSystemState{
+		[]TransitionSystemState{ts0.X[0]},
+		[]TransitionSystemState{ts0.X[1]},
+		ts0.X[1:3],
+		[]TransitionSystemState{},
+	}
+
+	// Algorithm
+	tf := ts0.HasStateSpacePartition(Q)
+	if tf {
+		t.Errorf("The function incorrectly thinks that Q is a partition, even though it includes an empty set!")
+	}
+}
+
+/*
+TestTransitionSystem_HasStateSpacePartition2
+Description:
+	Verifies that the HasStateSpacePartition() function identifies that sets that do not cover
+	the entire state space are not partitions.
+*/
+func TestTransitionSystem_HasStateSpacePartition2(t *testing.T) {
+	// Constants
+
+	ts0 := GetBeverageVendingMachineTS()
+
+	Q := [][]TransitionSystemState{
+		[]TransitionSystemState{ts0.X[0]},
+		ts0.X[1:3],
+	}
+
+	// Algorithm
+	tf := ts0.HasStateSpacePartition(Q)
+	if tf {
+		t.Errorf("The function incorrectly thinks that Q is a partition, even though it does not cover the entirety of ts0.X!")
+	}
+}
+
+/*
+TestTransitionSystem_HasStateSpacePartition3
+Description:
+	Verifies that the HasStateSpacePartition() function identifies that sets that do not cover
+	the entire state space are not partitions.
+*/
+func TestTransitionSystem_HasStateSpacePartition3(t *testing.T) {
+	// Constants
+
+	ts0 := GetBeverageVendingMachineTS()
+
+	Q := [][]TransitionSystemState{
+		[]TransitionSystemState{ts0.X[0]},
+		[]TransitionSystemState{ts0.X[1]},
+		ts0.X[1:len(ts0.X)],
+		ts0.X[0:2],
+	}
+
+	// Algorithm
+	tf := ts0.HasStateSpacePartition(Q)
+	if tf {
+		t.Errorf("The function incorrectly thinks that Q is a partition, even though it does not have disjoint subsets!")
+	}
+}
+
+/*
+TestTransitionSystem_IntersectionOfStates1
+Description:
+	Verifies that IntersectionOfStates works when there is only one input.
+*/
+func TestTransitionSystem_IntersectionOfStates1(t *testing.T) {
+
+	// Constants
+	x0 := TransitionSystemState{Name: "Steven"}
+	x1 := TransitionSystemState{Name: "Gabe"}
+	x2 := TransitionSystemState{Name: "Nosa"}
+	//x3 := TransitionSystemState{Name: "Desnor"}
+	//x4 := TransitionSystemState{Name: "Nailah"}
+
+	slice1 := []TransitionSystemState{x0, x1, x2}
+	//slice2 := []TransitionSystemState{x2, x3, x4}
+
+	// Algorithm
+	slice3 := IntersectionOfStates(slice1)
+
+	if len(slice3) != 3 {
+		t.Errorf("slice3 does not contain the proper number of elements!")
+	}
+
+	if !x0.In(slice3) {
+		t.Errorf("x0 not found in slice3!")
+	}
+
+	if !x1.In(slice3) {
+		t.Errorf("x1 not found in slice3!")
+	}
+
+	if !x2.In(slice3) {
+		t.Errorf("x2 not found in slice3!")
+	}
+
+}
+
+/*
+TestTransitionSystem_IntersectionOfStates2
+Description:
+	Verifies that IntersectionOfStates works when there are two inputs.
+*/
+func TestTransitionSystem_IntersectionOfStates2(t *testing.T) {
+
+	// Constants
+	x0 := TransitionSystemState{Name: "Steven"}
+	x1 := TransitionSystemState{Name: "Gabe"}
+	x2 := TransitionSystemState{Name: "Nosa"}
+	x3 := TransitionSystemState{Name: "Desnor"}
+	x4 := TransitionSystemState{Name: "Nailah"}
+
+	slice1 := []TransitionSystemState{x0, x1, x2}
+	slice2 := []TransitionSystemState{x2, x3, x4}
+
+	// Algorithm
+	slice3 := IntersectionOfStates(slice1, slice2)
+
+	if len(slice3) != 1 {
+		t.Errorf("slice3 does not contain the proper number of elements!")
+	}
+
+	if x0.In(slice3) {
+		t.Errorf("x0 not found in slice3!")
+	}
+
+	if x1.In(slice3) {
+		t.Errorf("x1 not found in slice3!")
+	}
+
+	if !x2.In(slice3) {
+		t.Errorf("x2 not found in slice3!")
+	}
+
+}
+
+/*
+TestTransitionSystem_IntersectionOfStates3
+Description:
+	Verifies that IntersectionOfStates works when there are three inputs
+	and no overlaps.
+*/
+
+func TestTransitionSystem_IntersectionOfStates3(t *testing.T) {
+
+	// Constants
+	x0 := TransitionSystemState{Name: "Steven"}
+	x1 := TransitionSystemState{Name: "Gabe"}
+	x2 := TransitionSystemState{Name: "Nosa"}
+	x3 := TransitionSystemState{Name: "Desnor"}
+	x4 := TransitionSystemState{Name: "Nailah"}
+	x5 := TransitionSystemState{Name: "Elon Musk"}
+	x6 := TransitionSystemState{Name: "Jeff Bezos"}
+
+	slice1 := []TransitionSystemState{x0, x1, x2}
+	slice2 := []TransitionSystemState{x2, x3, x4}
+	slice3 := []TransitionSystemState{x0, x3, x4, x5, x6}
+
+	// Algorithm
+	slice4 := IntersectionOfStates(slice1, slice2, slice3)
+
+	if len(slice4) != 0 {
+		t.Errorf("slice4 does not contain the proper number of elements!")
+	}
+
+	if x0.In(slice4) {
+		t.Errorf("x0 not found in slice4!")
+	}
+
+	if x1.In(slice4) {
+		t.Errorf("x1 not found in slice4!")
+	}
+
+	if x2.In(slice4) {
+		t.Errorf("x2 not found in slice4!")
+	}
+
+}

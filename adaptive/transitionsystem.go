@@ -380,6 +380,7 @@ Description:
 	According to the paper Q is a partition if:
 	- Empty set is not in Q
 	- Union of the subsets in Q makes X
+	- There is no overlap of sets in Q
 */
 func (ts TransitionSystem) HasStateSpacePartition(Q [][]TransitionSystemState) bool {
 	// Verify that empty set is not in Q
@@ -389,11 +390,23 @@ func (ts TransitionSystem) HasStateSpacePartition(Q [][]TransitionSystemState) b
 		}
 	}
 
-	// Verify that the union of all of these
+	// Verify that the union of all of these sets in Q
+	// make up the state space when considered in total.
 	unionOfQ := UnionOfStates(Q...) // Unrolls Q
 	tf, _ := SliceEquals(unionOfQ, ts.X)
 	if !tf {
 		return false // union of Q does not make X
+	}
+
+	// Verify that for each pair, the two sets are disjoint
+	for subsetIndex1, subset1 := range Q {
+		for subsetIndex2 := subsetIndex1 + 1; subsetIndex2 < len(Q); subsetIndex2++ {
+			subset2 := Q[subsetIndex2]
+			subsetsAreDisjoint := len(IntersectionOfStates(subset1, subset2)) == 0
+			if !subsetsAreDisjoint {
+				return false
+			}
+		}
 	}
 
 	return true
@@ -417,5 +430,41 @@ func UnionOfStates(stateSlicesIn ...[]TransitionSystemState) []TransitionSystemS
 	}
 
 	return unionOut
+
+}
+
+/*
+IntersectionOfStates
+Description:
+	Computes the intersection of a collection of TransitionSystemState slices.
+*/
+func IntersectionOfStates(stateSlicesIn ...[]TransitionSystemState) []TransitionSystemState {
+	// Constants
+	//numSubsets := len(stateSlicesIn)
+
+	// Algorithm
+	var intersectionOut []TransitionSystemState
+	if len(stateSlicesIn) == 0 {
+		return []TransitionSystemState{}
+	} else {
+		slice0 := stateSlicesIn[0]
+
+		for _, xi := range slice0 {
+			// Search through all other slices
+			var xiExistsInAll = true
+
+			for _, sliceI := range stateSlicesIn {
+				if !xi.In(sliceI) {
+					xiExistsInAll = false
+				}
+			}
+
+			if xiExistsInAll {
+				intersectionOut = append(intersectionOut, xi)
+			}
+		}
+
+		return intersectionOut
+	}
 
 }
