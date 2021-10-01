@@ -468,3 +468,90 @@ func IntersectionOfStates(stateSlicesIn ...[]TransitionSystemState) []Transition
 	}
 
 }
+
+/*
+ToQuotientTransitionSystemFor
+*/
+func (ts TransitionSystem) ToQuotientTransitionSystemFor(partition [][]TransitionSystemState) (QuotientTransitionSystem, error) {
+	// Check to see if partition is a true partition
+	if !ts.HasObservationPreservingStateSpacePartition(partition) {
+		return QuotientTransitionSystem{}, errors.New("The provided partition is not valid.")
+	}
+
+	// Copy over some of the old members of the Transition System to the QuotientTransitionSystem
+	qtsOut := QuotientTransitionSystem{
+		U:  ts.U,
+		Pi: ts.Pi,
+	}
+
+	// Create State Space
+	var Q []QTSState
+	for _, stateSubset := range partition {
+		Q = append(Q,
+			QTSState{
+				Subset: stateSubset,
+				System: &qtsOut,
+			},
+		)
+	}
+	qtsOut.Q = Q
+
+	// Define the Transitions that may (or may not) exist
+	tempBeta := make(map[*QTSState]map[string][]*QTSState)
+	for _, q := range qtsOut.Q {
+		tempBetaOfQ := make(map[string][]*QTSState)
+		for _, q_prime := range qtsOut.Q {
+			// Determine if there exists an input u which links q and q_prime
+			for _, u := range qtsOut.U {
+				// Compute post for some of the items in q
+				for _, x := range q.Subset {
+					tempPost, err := Post(x, u)
+					if err != nil {
+						return qtsOut, fmt.Errorf("There was an issue computing Post(\"%v\",\"%v\"): %v", x, u, err)
+					}
+
+					// Determine if the intersection of tempPost with q_prime is nonempty
+					tempIntersection := IntersectionOfStates(tempPost, q_prime.Subset)
+					if len(tempIntersection) != 0 {
+						tempBetaOfQ[u] = (&q_prime).AppendIfUniqueTo(tempBetaOfQ[u])
+					}
+				}
+			}
+		}
+		tempBeta[&q] = tempBetaOfQ
+	}
+	qtsOut.BetaQ = tempBeta
+
+	// After all of these modifications have been made, we return the value of the Quotient Transition System
+	return qtsOut, nil
+}
+
+/*
+HasObservationPreservingStateSpacePartition
+Description:
+	Determines if a collection of subsets of states (slice of slices of states)
+	forms a partition of the state space for a transition system.
+	According to the paper Q is an observation-preserving state space partition if:
+	- it is a state space partition,
+	- each cell has the same output value.
+*/
+func (ts TransitionSystem) HasObservationPreservingStateSpacePartition(Q [][]TransitionSystemState) bool {
+	// Verify that Q is a State Space partition
+	if !ts.HasStateSpacePartition(Q) {
+		return false
+	}
+
+	// Verify that for each pair, the two sets are disjoint
+	for _, subset := range Q {
+		candidateO := ts.O[subset[0]]
+		for _, x := range subset {
+			if tf, _ := SliceEquals(candidateO, ts.O[x]); !tf {
+				// If the observation does not match candidateO,
+				// then this cell does not preserve the observation property.
+				return false
+			}
+		}
+	}
+
+	return true
+}

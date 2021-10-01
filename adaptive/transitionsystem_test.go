@@ -430,6 +430,29 @@ func TestTransitionSystem_HasStateSpacePartition3(t *testing.T) {
 }
 
 /*
+TestTransitionSystem_HasStateSpacePartition4
+Description:
+	Verifies that the HasStateSpacePartition() function identifies a true partition.
+*/
+func TestTransitionSystem_HasStateSpacePartition4(t *testing.T) {
+	// Constants
+
+	ts0 := GetBeverageVendingMachineTS()
+
+	Q := [][]TransitionSystemState{
+		[]TransitionSystemState{ts0.X[0]},
+		[]TransitionSystemState{ts0.X[1]},
+		ts0.X[2:len(ts0.X)],
+	}
+
+	// Algorithm
+	tf := ts0.HasStateSpacePartition(Q)
+	if !tf {
+		t.Errorf("The function does not think Q is a partition, even though it is!")
+	}
+}
+
+/*
 TestTransitionSystem_IntersectionOfStates1
 Description:
 	Verifies that IntersectionOfStates works when there is only one input.
@@ -546,4 +569,81 @@ func TestTransitionSystem_IntersectionOfStates3(t *testing.T) {
 		t.Errorf("x2 not found in slice4!")
 	}
 
+}
+
+/*
+TestTransitionSystem_ToQuotientTransitionSystemFor1
+Description:
+	Verifies that the ToQuotientTransitionSystemFor() function identifies when a partition is not given.
+*/
+func TestTransitionSystem_ToQuotientTransitionSystemFor1(t *testing.T) {
+	// Constants
+
+	ts0 := GetBeverageVendingMachineTS()
+
+	Q := [][]TransitionSystemState{
+		[]TransitionSystemState{ts0.X[0]},
+		[]TransitionSystemState{ts0.X[1]},
+		ts0.X[2:len(ts0.X)],
+		ts0.X[0:2],
+	}
+
+	// Algorithm
+	_, err := ts0.ToQuotientTransitionSystemFor(Q)
+	if err == nil {
+		t.Errorf("There was not an error raised, when there should have been!")
+	} else {
+		if err.Error() != fmt.Sprintf("The provided partition is not valid.") {
+			t.Errorf("The function does not recognize Q is not a partition!")
+		}
+	}
+}
+
+/*
+TestTransitionSystem_ToQuotientTransitionSystemFor2
+Description:
+	Verifies that the ToQuotientTransitionSystemFor() function identifies when:
+	- a correct partition is given.
+
+*/
+func TestTransitionSystem_ToQuotientTransitionSystemFor2(t *testing.T) {
+	// Constants
+
+	ts0 := GetBeverageVendingMachineTS()
+
+	Q := [][]TransitionSystemState{
+		[]TransitionSystemState{ts0.X[0]},
+		[]TransitionSystemState{ts0.X[1]},
+		ts0.X[2:len(ts0.X)],
+	}
+
+	// Algorithm
+	_, err := ts0.ToQuotientTransitionSystemFor(Q)
+	if err == nil {
+		t.Errorf("There was not an error raised, when there should have been!")
+	} else {
+		if err.Error() != fmt.Sprintf("The provided partition is not valid.") {
+			t.Errorf("The function does not recognize Q is not a partition!")
+		}
+	}
+}
+
+/*
+TestQTS_HasObservationPreservingStateSpacePartition1
+Description:
+	Determines if a partition fails to have proper labels.
+*/
+func TestTransitionSystem_HasObservationPreservingStateSpacePartition1(t *testing.T) {
+	// Constants
+	ts0 := GetBeverageVendingMachineTS()
+	Q := [][]TransitionSystemState{
+		ts0.X[0:2],
+		[]TransitionSystemState{ts0.X[2]},
+		[]TransitionSystemState{ts0.X[len(ts0.X)-1]},
+	}
+
+	// Algorithm
+	if ts0.HasObservationPreservingStateSpacePartition(Q) {
+		t.Errorf("The function HasObservationPreservingStateSpacePartition() does not properly identify that Q does not preserve observations!")
+	}
 }
